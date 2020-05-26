@@ -1,12 +1,14 @@
 Package: austin2011
-Title: What the Package Does (One Line, Title Case)
+Title: Replication Simulation Study Austin 2011
 Version: 0.0.0.9000
-Authors@R:
-    person(given = "First",
-           family = "Last",
+Authors@R: c(
+    person(given = "Anna",
+           family = "Lohmann",
            role = c("aut", "cre"),
-           email = "first.last@example.com")
-Description: What the package does (one paragraph)
+           email = "anna@lohmann-web.net"),
+    person("Rolf H.H.", "Groenwold",
+            role = "aut"))
+Description: A replication of Austin, P.C., (2011), Optimal Caliper width for propensity-score matching when estimating differences in means and differences in proportions in observational studies. Pharmaceut. Statist. 10, 150-161. https://doi.org/10.1002/pst.433
 License: MIT + file LICENSE
 ByteCompile: true
 Encoding: UTF-8
@@ -14,7 +16,13 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Imports: bookdown,
-    here
+    here,
+    dplyr,
+    purrr,
+    ggplot2,
+    digest,
+    MASS,
+    rlang
 Suggests: 
     devtools,
     git2r,
