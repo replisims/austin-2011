@@ -1,0 +1,41 @@
+# Abstraction of Austin 2011
+
+
+Aspect that can be varied:
+
+# Number of covariates
+# Distribution for each covariate
+# Sample size
+# Proportion of treated subjects
+# marginal probability of the outcome
+
+# outcome type: continous vs binary
+# error variance (for continuous outcome model)
+# effect sizes of covariates
+# magnitude of treatment effect
+# number of iterations (datasets created)
+
+#First step:
+
+
+Iterative process described in Austin 2010:
+
+## First Process:
+Determine the value of $\beta$ that will result in a desired target marginal risk difference
+
+(1) guess a $\beta$
+(2) Simulate covariate data of size n = 10000.
+(3) Compute the probability of sucess in treated as well as the probability of 
+success if untreated for all subjects
+(4) Repeat k = 1000 times
+(5) Compute the mean for each of these two probabilities across the simulated population
+(6) Compute the risk difference from these
+(7) Adjust $/beta$ depending on whether $\gamma$ is too large or to small.
+
+(6) Compute the empirical marginal risk difference (i.
+e. the mean marginal risk difference over all iterations)
+
+## Second Process
+Determine the value of $\alpha_0$ that results in a given marginal probability of 
+success in the population if all subjects were untreated.
+

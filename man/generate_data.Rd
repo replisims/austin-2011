@@ -47,7 +47,8 @@ a list with the following content
 \item \code{sim_data} dataframe with simulated data}
 \item \code{alpha_0_treat} numerical value indicating intercept of treatment model
 \item \code{alpha_0_outcome} numerical value indicating intercept of outcome model
-\item \code{beta} numerical value indicating regression coefficient of treatment dummy}
+\item \code{beta} numerical value indicating regression coefficient of treatment dummy
+}
 }
 \description{
 Generate predictor and outcome data
