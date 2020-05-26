@@ -28,7 +28,7 @@ get_cov_matrix <- function(n_normal,
 #'
 #' @return a tibble data frame of size \code{sample_size} x \code{n_covariates}
 #'
-#' @examples
+#' @importFrom magrittr "%>%"
 sample_covariates <- function(sample_size,
                               n_covariates,
                               n_normal,
@@ -68,7 +68,7 @@ sample_covariates <- function(sample_size,
 #'
 #' @return a vector
 #'
-#' @examples
+#' @importFrom magrittr "%>%"
 get_linear_predictor <- function(alpha, covariate_data){
 
   linear_combination <- t(alpha) %*% t(as.matrix(covariate_data))
@@ -140,7 +140,7 @@ binary_search <- function(fun,
 #' @return
 #' @export
 #'
-#' @examples
+#' @importFrom magrittr "%>%"
 sample_bernoulli <- function(probability){
 
   probability %>%
@@ -158,7 +158,7 @@ sample_bernoulli <- function(probability){
 #'
 #' @return marginal risk difference obtained with candidate value
 #'
-#' @examples
+
 estimate_marginal_risk_diff <- function(candidate,
                                         linear_predictor,
                                         marg_prob_untreated){
@@ -184,7 +184,7 @@ estimate_marginal_risk_diff <- function(candidate,
 #'
 #' @return estimate for intercept
 #'
-#' @examples
+#' @importFrom magrittr "%>%"
 get_intercept <- function(n_iter,
                         sample_size,
                         n_covariates,
@@ -228,7 +228,8 @@ get_intercept <- function(n_iter,
 #' @param risk_diff intended risk difference
 #'
 #' @return estimate for beta (coefficient for treatment dummy)
-
+#' @importFrom magrittr "%>%"
+#'
 get_beta <- function(n_iter,
                      sample_size,
                      n_covariates,

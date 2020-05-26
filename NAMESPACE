@@ -3,3 +3,4 @@
 export(binary_search)
 export(generate_data)
 export(sample_bernoulli)
+importFrom(magrittr,"%>%")
