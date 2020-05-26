@@ -5,7 +5,7 @@
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/annloh/austin2011/master?urlpath=rstudio)
 
-This repository contains the data and code for the replication attempt of :
+This repository contains the data and code for the replication attempt of :  
 Austin, P. C. (2011). Optimal caliper widths for propensity-score matching when estimating differences in means and differences in proportions in observational studies. *Pharmaceutical Statistics*, 10(2), 150–161. https://doi.org/10.1002/pst.433
 
 ## Contents
