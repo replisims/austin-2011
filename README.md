@@ -4,7 +4,7 @@
 # austin2011
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/annloh/austin2011/master?urlpath=rstudio)
-[![Tweet](https://img.shields.io/twitter/url/https/github.com/annloh/hyde.svg?style=social)](https://twitter.com/intent/tweet?text=Check%20out%20Hyde!%20%E2%9C%A8%20An%20accessible,%20open-source%20markdown%20editor%20for%20any%20user%20E2%9C%A8%20https://github.com/annloh/austin2011/hyde%20%F0%9F%A4%97)
+[![Tweet](https://img.shields.io/twitter/url/https/github.com/annloh/hyde.svg?style=social)](https://twitter.com/intent/tweet?text=Check out this replication of a simulation study!https://github.com/annloh/austin2011)
 [![Twitter Follow](https://img.shields.io/twitter/follow/annloh.svg?style=social)](https://twitter.com/annloh)  
 
 
