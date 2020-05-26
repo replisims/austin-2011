@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# austin2011
+# austin2011 - Replication of a Simulation Study
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/annloh/austin2011/master?urlpath=rstudio)
 [![Twitter Follow](https://img.shields.io/twitter/follow/annloh.svg?style=social)](https://twitter.com/annloh)  
