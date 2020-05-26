@@ -4,7 +4,6 @@
 # austin2011
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/annloh/austin2011/master?urlpath=rstudio)
-[![Tweet](https://img.shields.io/twitter/url/https/github.com/annloh/hyde.svg?style=social)](https://twitter.com/intent/tweet?text=Check out this replication of a simulation study!https://github.com/annloh/austin2011)
 [![Twitter Follow](https://img.shields.io/twitter/follow/annloh.svg?style=social)](https://twitter.com/annloh)  
 
 
