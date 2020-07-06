@@ -261,3 +261,13 @@ get_beta <- function(n_iter,
   }) %>% mean()
 }
 
+#' Simulate random error for continuous outcome
+#'
+#' @param sigma_squared Error variance
+#' @param sample_size sample size
+#'
+#' @return Numeric vector of length \code{sample_size}
+#'
+get_epsilon <- function(sigma_squared, sample_size){
+  rnorm(n = sample_size, mean = 0, sd = sqrt(sigma_squared))
+}

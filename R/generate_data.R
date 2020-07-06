@@ -6,6 +6,7 @@
 #' @param pair_cor pairwise correlation
 #' @param alpha covariate vector of length \code{n_covariate}
 #' @param beta coefficient for treatment-dummy
+#' @param sigma_squared error variance
 #' @param outcome_type character value \code{"continuous"} or \code{"binary"}
 #' @param n_iter integer indicating number of iterations
 #' @param prop_treated numerical value of intended proportion of treated individuals
@@ -23,36 +24,37 @@
 generate_data <- function(sample_size = 10000,
                           n_covariates = 10,
                           n_normal = n_covariates,
-                          pair_cor,
+                          pair_cor = 0,
                           alpha,
                           beta = NULL,
+                          sigma_squared = NULL,
                           outcome_type = NULL,
                           n_iter = 1000,
                           prop_treated = NULL,
-                          risk_diff = 0,
-                          margin_prev){
+                          risk_diff = NULL,
+                          margin_prev = NULL){
 
   if(n_normal>0){
     cov_mat <- get_cov_matrix(n_normal = n_normal,
                                 pair_cor = pair_cor)}
 
-  alpha_0_treat <- switch(outcome_type,
-                    binary = get_intercept(n_iter,
-                                           sample_size,
-                                           n_covariates,
-                                           n_normal,
-                                           cov_mat,
-                                           alpha,
-                                           target_mean = prop_treated),
-                    continuous = 0)
+  alpha_0_treat <- get_intercept(n_iter,
+                                 sample_size,
+                                 n_covariates,
+                                 n_normal,
+                                 cov_mat,
+                                 alpha,
+                                 target_mean = prop_treated)
 
-  alpha_0_outcome <- get_intercept(n_iter,
+  alpha_0_outcome <- switch(outcome_type,
+                            binary = get_intercept(n_iter,
                                    sample_size,
                                    n_covariates,
                                    n_normal,
                                    cov_mat,
                                    alpha,
-                                   target_mean = margin_prev)
+                                   target_mean = margin_prev),
+                            continuous = 0)
 
   beta <- switch(outcome_type,
                  binary = get_beta(n_iter,
@@ -89,7 +91,8 @@ generate_data <- function(sample_size = 10000,
 
   outcome <- switch(outcome_type,
                     binary = sample_bernoulli(outcome_prob),
-                    continuous = lin_pred + beta * treatment_indicator)
+                    continuous = lin_pred_outcome + beta * treatment_indicator + get_epsilon(sigma_squared = sigma_squared,
+                                                                                             sample_size = sample_size))
 
 
   list(sim_data = tibble::tibble(covariate_data,

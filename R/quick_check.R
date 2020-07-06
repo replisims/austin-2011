@@ -14,16 +14,18 @@ MC_sampling <- function(sample_size,
     names(covariate_data) <- paste0("x_", 1:n_covariates)
     covariate_data <- do.call(cbind, covariate_data)
 
-    lin_pred <- get_linear_predictor(c(alpha_0, alpha), cbind(rep(1,sample_size), covariate_data))
+    lin_pred <- get_linear_predictor(alpha = c(alpha_0, alpha),
+                                     covariate_data = cbind(rep(1,sample_size), covariate_data))
 
-    p_1 <- 1/(1 + exp(-(lin_pred+beta)))
+    p_1 <- 1/(1 + exp(-(lin_pred + beta)))
     p_0 <- 1/(1 + exp(-(lin_pred)))
 
     gamma <- mean(p_1-p_0)
     marginal_prob_treated <- mean(p_1)
     marginal_prob_untreated <- mean(p_0)
 
-    return(list(gamma = gamma,
+    return(list(covariate_data,
+                gamma = gamma,
                 marginal_prob_treated = marginal_prob_treated,
                 marginal_prob_untreated = marginal_prob_untreated))
     }
@@ -48,8 +50,8 @@ beta_paper_015 <- 0.4658031
 
 test_austin <- MC_sampling(sample_size = 10000,
                            alpha = alpha_dich,
-                           alpha_0 = log(0.29/0.71),
-                           beta = 0.9077272,
+                           alpha_0 = -1.098537,
+                           beta = log(0.90619),
                            n_covariates = 10)
 
 test_austin$gamma #should be -0.02
