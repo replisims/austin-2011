@@ -24,33 +24,35 @@ get_calipher_width <- function(gamma, var_treated, var_untreated){
   gamma*sqrt((var_treated + var_untreated)/2)
 }
 
-sample_matching_candidate <- function(data){
-  candidate_id <- data %>%
+sample_matching_candidate <- function(matching_data){
+  candidate_id <- matching_data %>%
     dplyr::filter(treatment_indicator == 1) %>%
     .$id
   candidate_id[sample(x = length(candidate_id), size = 1, replace = FALSE)]
 }
 
-get_case_logit_propensity <- function(case_id, data){
-  data %>%
-    filter(id == case_id) %>%
-    select(logit_propensity) %>% as.numeric()
+get_case_logit_propensity <- function(case_id, matching_data){
+  matching_data %>%
+    dplyr::filter(id == case_id) %>%
+    dplyr::select(logit_propensity) %>% as.numeric()
 }
 
-compute_distance <- function(candidate_id, data){
+compute_distance <- function(candidate_id, matching_data){
 
-  candidate_logit_ps <- get_case_logit_propensity(case_id = candidate_id, data)
-  data %>%
+  candidate_logit_ps <- get_case_logit_propensity(case_id = candidate_id,
+                                                  matching_data = matching_data)
+  matching_data %>%
   dplyr::filter(treatment_indicator == 0) %>%
-  transmute(distance = abs(candidate_logit_ps - logit_propensity))
+    dplyr::transmute(distance = abs(candidate_logit_ps - logit_propensity))
 }
 
-compute_id_min_dist <- function(candidate_id, data){
-  distance <-  compute_distance(candidate_id, data)
-  control_data <- data %>% filter(treatment_indicator == 0)
-  data <- bind_cols(control_data, distance)
-  data %>%
-    filter(distance == min(data$distance)) %>%
-    select(id)
+compute_id_min_dist <- function(candidate_id, matching_data){
+  distance <-  compute_distance(candidate_id, matching_data)
+  control_data <- matching_data %>%
+    dplyr::filter(treatment_indicator == 0)
+  matching_data <- dplyr::bind_cols(control_data, distance)
+  matching_data %>%
+    dplyr::filter(distance == min(matching_data$distance)) %>%
+    dplyr::select(id)
 }
 

@@ -133,7 +133,7 @@ binary_search <- function(fun,
 # Compute Treatment Indicator ---------------------------------------------
 
 
-#' Title
+#' Sample treatment indicator
 #'
 #' @param probability
 #'
@@ -241,13 +241,13 @@ get_beta <- function(n_iter,
   1:n_iter %>% purrr::map_dbl(~{
 
     covariate_data <- sample_covariates(sample_size = sample_size,
-                                      n_covariates = n_covariates,
-                                      n_normal = n_normal,
-                                      cov_mat = cov_mat)
+                                        n_covariates = n_covariates,
+                                        n_normal = n_normal,
+                                        cov_mat = cov_mat)
 
 
     lin_pred <- get_linear_predictor(alpha = c(alpha_0_outcome, alpha),
-                                   covariate_data = cbind(rep(1, sample_size), covariate_data))
+                                     covariate_data = cbind(rep(1, sample_size), covariate_data))
 
 
     marg_prob_untreated <- 1/(1 + exp(-(lin_pred))) # p_bar_0

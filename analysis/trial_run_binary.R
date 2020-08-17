@@ -1,3 +1,5 @@
+true_rd <- c(0, -0.02, -0.05, -0.10, -0.1)
+gamma <- seq(0.05, 2.5, 0.05)
 
 # trial run binary --------------------------------------------------------
 
@@ -65,4 +67,4 @@ contingency_matrix <- get_contingency_matrix(matched_data)
 
 mc_nemar <- mcnemar.test(contingency_matrix, correct = FALSE)
 
-
+get_h_0(contingency_matrix)

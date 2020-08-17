@@ -3,20 +3,22 @@
 
 compute_delta <- function(matched_df){
   seq(from = 2, to = nrow(matched_df), by = 2) %>%
-        map_dbl(~{matched_df$outcome[.x] - matched_df$outcome[.x - 1]})
+        purrr::map_dbl(~{matched_df$outcome[.x] - matched_df$outcome[.x - 1]})
 }
 
 bias_crude <- function(sim_data, true_treatment_effect){
   mean_treated <- sim_data %>%
-    filter(treatment_indicator == 1) %>%
-    select(outcome) %>%
-    summarize(mean = mean(outcome))
+    dplyr::filter(treatment_indicator == 1) %>%
+    dplyr::select(outcome) %>%
+    dplyr::summarize(mean = mean(outcome))
+
   mean_untreated <- sim_data %>%
-    filter(treatment_indicator == 0) %>%
-    select(outcome) %>%
-    summarize(mean = mean(outcome))
-  (mean_treated - mean_untreated) - true_treatment_effect
+    dplyr::filter(treatment_indicator == 0) %>%
+    dplyr::select(outcome) %>%
+    dplyr::summarize(mean = mean(outcome))
+  (mean_treated[1, 1] - mean_untreated[1, 1]) - true_treatment_effect %>% unname()
 }
+
 
 bias_reduction <- function(crude_bias, ps_bias){
   100 * ((crude_bias - ps_bias) / crude_bias)
@@ -62,4 +64,12 @@ get_contingency_matrix <- function(matched_data){
 
 get_h_0 <- function(contingency_matrix){
   mcnemar.test(contingency_matrix, correct = FALSE)$p.value < 0.05
+}
+
+type_1_error <- function(true_effect, contingency_matrix){
+
+}
+
+ci_coverage <- function(ci_low, ci_up, true_effect){
+  (ci_low < true_effect) & (ci_up > true_effect)
 }

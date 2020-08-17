@@ -3,7 +3,7 @@
 
 # Absolute risk reduction -------------------------------------------------
 
-proportion of treated subjects with the outcome- proportion of treated subjects without the outcome
+#proportion of treated subjects with the outcome- proportion of treated subjects without the outcome
 
 
 # McNemar's Test for correlated binomial proportions ----------------------

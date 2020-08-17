@@ -2,10 +2,10 @@
 #'
 #' @param sample_size integer specifying the sample size
 #' @param n_covariates integer specifying the number of covariates
-#' @param n_normal  integer specifying the number of normal covariates (must be <= n_convariates)
-#' @param pair_cor pairwise correlation
+#' @param n_normal  integer specifying the number of normal covariates (must be <= \code{n_convariates})
+#' @param pair_cor pairwise correlation of covariates
 #' @param alpha covariate vector of length \code{n_covariate}
-#' @param beta coefficient for treatment-dummy
+#' @param beta regression coefficient for treatment-dummy
 #' @param sigma_squared error variance
 #' @param outcome_type character value \code{"continuous"} or \code{"binary"}
 #' @param n_iter integer indicating number of iterations

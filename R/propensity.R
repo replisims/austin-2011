@@ -7,9 +7,21 @@
 
 # Matching Utils ----------------------------------------------------------
 
+#' Create a dateframe with matched data
+#'
+#' @param gamma calipher width
+#' @param treatment_indicator vector indicating treatment or control percase
+#' @param logit_propensity vector with logit of propensity score per case
+#' @param seed
+#'
+#' @return a dataframe with id's of matched cases
+#' @export
+
 get_matched_df <- function(gamma, treatment_indicator, logit_propensity, seed){
 
-  data <- data.frame(id = 1:length(treatment_indicator),
+  set.seed(seed)
+  # add an id column
+  matching_data <- data.frame(id = 1:length(treatment_indicator),
                      treatment_indicator = treatment_indicator,
                      logit_propensity = logit_propensity)
 
@@ -17,36 +29,33 @@ get_matched_df <- function(gamma, treatment_indicator, logit_propensity, seed){
 
   calipher <- get_calipher_width(gamma = gamma,
                      var_treated = get_var_logit_prop_score(group = 1,
-                                                            logit_propensity = data$logit_propensity,
-                                                            treatment_indicator = data$treatment_indicator),
+                                                            logit_propensity = logit_propensity,
+                                                            treatment_indicator = treatment_indicator),
                      var_untreated = get_var_logit_prop_score(group = 0,
-                                                            logit_propensity = data$logit_propensity,
-                                                            treatment_indicator = data$treatment_indicator))
+                                                            logit_propensity = logit_propensity,
+                                                            treatment_indicator = treatment_indicator))
 
 
   #while there are still participants in the controlgroup as well as in the treatment group
 
-  while(sum(data$treatment_indicator) > 0 & (sum(data$treatment_indicator) < length(data$treatment_indicator))){
+  while(sum(matching_data$treatment_indicator) > 0 & (sum(matching_data$treatment_indicator) < length(matching_data$treatment_indicator))){
 
-  set.seed(seed)
+
 
   # sample one candidate case for matching---------------------------------------------------------
 
-  candidate_id <- sample_matching_candidate(data)
+  candidate_id <- sample_matching_candidate(matching_data = matching_data)
 
 
 
-# Get distance to candidate_value -----------------------------------------
+  # Get distance to candidate_value -----------------------------------------
 
-  distance <- compute_distance(candidate_id, data)
+  distance <- compute_distance(candidate_id = candidate_id, matching_data = matching_data)
 
 
   # Get index of minimal distance -------------------------------------------
 
-  match_id <- compute_id_min_dist(candidate_id, data)
-
-
-
+  match_id <- compute_id_min_dist(candidate_id, matching_data)
 
   # Check whether minimal distance lower than calipher ----------------------
 
@@ -54,16 +63,18 @@ get_matched_df <- function(gamma, treatment_indicator, logit_propensity, seed){
 
     #add matched pair to matched data and remove from data
 
-    matched_data <- as.data.frame(bind_rows(matched_data, data %>% filter(id %in% c(candidate_id, match_id))))
+    matched_data <- as.data.frame(dplyr::bind_rows(matched_data, matching_data %>% dplyr::filter(id %in% c(candidate_id, match_id))))
 
-    data <- data %>% filter(!id %in% c(candidate_id, match_id))
+    matching_data <- matching_data %>% dplyr::filter(!id %in% c(candidate_id, match_id$id))
   }else{
 
     #kick out candidate
-    data <- data %>% filter(id != candidate_id)
+    matching_data <- matching_data %>% dplyr::filter(id != candidate_id)
    }
 
   }
+
+
 
 return(matched_data)
 }
@@ -74,41 +85,3 @@ return(matched_data)
 
 
 # within matched pair difference in outcome between treated and un --------
-
-
-
-
-
-
-
-# Obtain estimand ---------------------------------------------------------
-
-
-# Obtain performance measures ---------------------------------------------
-
-
-
-# treatment effect --------------------------------------------------------
-
-mean(delta)
-
-# One-sample t-test -------------------------------------------------------
-
-t.test(delta, mu = 0, alternative = "two.sided")
-
-
-# Standard error of the estimated difference in means ----------------------
-
-
-
-# 95% confidence interval of mean treatment effect ------------------------
-
-
-# Reduction in bias -------------------------------------------------------
-
-
-# MSE of estimated difference in means ------------------------------------
-
-
-
-
