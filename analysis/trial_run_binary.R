@@ -21,7 +21,7 @@ test_binary <- generate_data(sample_size = 10000,
 propensity_score <- get_propensity(treatment_indicator = test_binary$sim_data$treatment_indicator,
                                    predictors = test_binary$sim_data[,1:10])
 
-logit_propensity <- get_logit_propensity(propensity_score)
+logit_propensity <- compute_logit(propensity_score)
 
 matched_df <- get_matched_df(gamma = 0.3,
                              treatment_indicator = test_binary$sim_data$treatment_indicator,

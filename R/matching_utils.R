@@ -11,10 +11,14 @@ get_propensity <- function(treatment_indicator, predictors){
   predict(fit_logistic, type = "response")
 }
 
-get_logit_propensity <- function(propensity_score){
+compute_logit <- function(propensity_score){
   log(propensity_score/(1 - propensity_score))
 }
 
+# TODO PL  Better with "dynamic" parameters
+get_propensity_logit <- function(...){
+  compute_logit(get_propensity(...))
+}
 
 get_var_logit_prop_score <- function(group, logit_propensity, treatment_indicator){
   var(logit_propensity[which(treatment_indicator == group)])

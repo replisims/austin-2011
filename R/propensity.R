@@ -16,7 +16,6 @@
 #'
 #' @return a dataframe with id's of matched cases
 #' @export
-
 get_matched_df <- function(gamma, treatment_indicator, logit_propensity, seed){
 
   set.seed(seed)
