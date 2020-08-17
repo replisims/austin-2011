@@ -6,7 +6,11 @@ continuous_scenarios <- c("indep_normal_cont_0",
                           "indep_normal_cont_125",
                           "indep_normal_cont_15",
                           "indep_normal_cont_2",
-                          "correlated_normal",
+                          "cor_normal_cont_0",
+                          "cor_normal_cont_11",
+                          "cor_normal_cont_125",
+                          "cor_normal_cont_15",
+                          "cor_normal_cont_2",
                           )
 
 # Continuous outcome -------------------------------------------------------
@@ -20,19 +24,22 @@ fixed_param_cont <- list(alpha = c(1.1, 1.1, 1.1, 1.25, 1.25, 1.25, 1.5, 1.5, 1.
                               sigma_squared = 127.6056,
                               outcome_type = "continuous")
 
-fixed_param_binary <- list(alpha = c(rep(log(1.1), 3), rep(log(1.25), 3), rep(log(1.5), 3), log(2)),
-                                beta = NULL,
-                                sigma_squared = NULL,
-                                outcome_type = "binary",
-                                n_iter = 1000,
-                                prop_treated = 0.25,
-                                margin_prev = 0.29)
+fixed_param_binary <- list(alpha = c(rep(log(1.1), 3),
+                                     rep(log(1.25), 3),
+                                     rep(log(1.5), 3),
+                                     log(2)),
+                          beta = NULL,
+                          sigma_squared = NULL,
+                          outcome_type = "binary",
+                          n_iter = 1000,
+                          prop_treated = 0.25,
+                          margin_prev = 0.29)
 
 fixed_param_indep_normal <- list(n_normal = 10,
-                                      pair_cor = 0)
+                                 pair_cor = 0)
 
 fixed_param_cor_normal <- list(n_normal = 10,
-                                 pair_cor = 0.25)
+                               pair_cor = 0.25)
 
 fixed_param_mix_1 <- list(n_normal = 5,
                           pair_cor = 0)
@@ -43,16 +50,24 @@ fixed_parameters_2 <- list(n_normal = 1,
 
 
 # Independant normal covariates -------------------------------------------
+indep_normal_cont <- list(fixed_parameters,
+                          fixed_param_cont,
+                          fixed_param_indep_normal)
 
-indep_normal_cont_0 <- list(beta = 0)
+indep_normal_cont_0 <- list(indep_normal_cont,
+                            beta = 0)
 
-indep_normal_cont_11 <- list(beta = 1.1)
+indep_normal_cont_11 <- list(indep_normal_cont,
+                             beta = 1.1)
 
-indep_normal_cont_125 <- list(beta = 1.25)
+indep_normal_cont_125 <- list(indep_normal_cont,
+                              beta = 1.25)
 
-indep_normal_cont_15 <- list(beta = 1.5)
+indep_normal_cont_15 <- list(indep_normal_cont,
+                             beta = 1.5)
 
-indep_normal_cont_2 <- list(beta = 2)
+indep_normal_cont_2 <- list(indep_normal_cont,
+                            beta = 2)
 
 
 # Correlated covariates ---------------------------------------------------
