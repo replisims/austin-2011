@@ -22,7 +22,9 @@ Imports: bookdown,
     ggplot2,
     digest,
     MASS,
-    rlang
+    rlang,
+    roxygen2,
+    magrittr
 Suggests: 
     devtools,
     git2r,

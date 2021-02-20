@@ -28,7 +28,7 @@ get_cov_matrix <- function(n_normal,
 #'
 #' @return a tibble data frame of size \code{sample_size} x \code{n_covariates}
 #'
-#' @examples
+#' @importFrom magrittr "%>%"
 sample_covariates <- function(sample_size,
                               n_covariates,
                               n_normal,
@@ -68,7 +68,7 @@ sample_covariates <- function(sample_size,
 #'
 #' @return a vector
 #'
-#' @examples
+#' @importFrom magrittr "%>%"
 get_linear_predictor <- function(alpha, covariate_data){
 
   linear_combination <- t(alpha) %*% t(as.matrix(covariate_data))
@@ -133,14 +133,14 @@ binary_search <- function(fun,
 # Compute Treatment Indicator ---------------------------------------------
 
 
-#' Title
+#' Sample treatment indicator
 #'
 #' @param probability
 #'
 #' @return
 #' @export
 #'
-#' @examples
+#' @importFrom magrittr "%>%"
 sample_bernoulli <- function(probability){
 
   probability %>%
@@ -158,7 +158,7 @@ sample_bernoulli <- function(probability){
 #'
 #' @return marginal risk difference obtained with candidate value
 #'
-#' @examples
+
 estimate_marginal_risk_diff <- function(candidate,
                                         linear_predictor,
                                         marg_prob_untreated){
@@ -184,7 +184,7 @@ estimate_marginal_risk_diff <- function(candidate,
 #'
 #' @return estimate for intercept
 #'
-#' @examples
+#' @importFrom magrittr "%>%"
 get_intercept <- function(n_iter,
                         sample_size,
                         n_covariates,
@@ -228,7 +228,8 @@ get_intercept <- function(n_iter,
 #' @param risk_diff intended risk difference
 #'
 #' @return estimate for beta (coefficient for treatment dummy)
-
+#' @importFrom magrittr "%>%"
+#'
 get_beta <- function(n_iter,
                      sample_size,
                      n_covariates,
@@ -240,13 +241,13 @@ get_beta <- function(n_iter,
   1:n_iter %>% purrr::map_dbl(~{
 
     covariate_data <- sample_covariates(sample_size = sample_size,
-                                      n_covariates = n_covariates,
-                                      n_normal = n_normal,
-                                      cov_mat = cov_mat)
+                                        n_covariates = n_covariates,
+                                        n_normal = n_normal,
+                                        cov_mat = cov_mat)
 
 
     lin_pred <- get_linear_predictor(alpha = c(alpha_0_outcome, alpha),
-                                   covariate_data = cbind(rep(1, sample_size), covariate_data))
+                                     covariate_data = cbind(rep(1, sample_size), covariate_data))
 
 
     marg_prob_untreated <- 1/(1 + exp(-(lin_pred))) # p_bar_0
@@ -260,3 +261,13 @@ get_beta <- function(n_iter,
   }) %>% mean()
 }
 
+#' Simulate random error for continuous outcome
+#'
+#' @param sigma_squared Error variance
+#' @param sample_size sample size
+#'
+#' @return Numeric vector of length \code{sample_size}
+#'
+get_epsilon <- function(sigma_squared, sample_size){
+  rnorm(n = sample_size, mean = 0, sd = sqrt(sigma_squared))
+}
