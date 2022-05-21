@@ -3,7 +3,7 @@
 
 # austin2011 - Replication of a Simulation Study
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/annloh/austin2011/master?urlpath=rstudio)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/replisims/austin-2011/master?urlpath=rstudio)
 [![Twitter Follow](https://img.shields.io/twitter/follow/annloh.svg?style=social)](https://twitter.com/annloh)  
 
 
