@@ -84,8 +84,7 @@ get_linear_predictor <- function(alpha, covariate_data){
 #' @param linear_predictor the linear predictor withour the intercept
 #'
 #' @return marginal probability using the candidate intercept
-#'
-#' @examples
+
 estimate_intercept <- function(candidate,
                                linear_predictor){
 
@@ -106,7 +105,6 @@ estimate_intercept <- function(candidate,
 #'
 #' @return an approximation of the target value
 #' @export
-#'
 
 binary_search <- function(fun,
                           target_value,

@@ -10,11 +10,11 @@
 #' Create a dateframe with matched data
 #'
 #' @param gamma calipher width
-#' @param treatment_indicator vector indicating treatment or control percase
+#' @param treatment_indicator vector indicating treatment or control per case
 #' @param logit_propensity vector with logit of propensity score per case
 #' @param seed
 #'
-#' @return a dataframe with id's of matched cases
+#' @return a data frame with id's of matched cases
 #' @export
 get_matched_df <- function(gamma, treatment_indicator, logit_propensity, seed){
 
@@ -27,15 +27,15 @@ get_matched_df <- function(gamma, treatment_indicator, logit_propensity, seed){
   matched_data <- NULL
 
   calipher <- get_calipher_width(gamma = gamma,
-                     var_treated = get_var_logit_prop_score(group = 1,
-                                                            logit_propensity = logit_propensity,
-                                                            treatment_indicator = treatment_indicator),
-                     var_untreated = get_var_logit_prop_score(group = 0,
-                                                            logit_propensity = logit_propensity,
-                                                            treatment_indicator = treatment_indicator))
+                                 var_treated = get_var_logit_prop_score(group = 1,
+                                                                        logit_propensity = logit_propensity,
+                                                                        treatment_indicator = treatment_indicator),
+                                 var_untreated = get_var_logit_prop_score(group = 0,
+                                                                          logit_propensity = logit_propensity,
+                                                                          treatment_indicator = treatment_indicator))
 
 
-  #while there are still participants in the controlgroup as well as in the treatment group
+  #while there are still participants in the control group as well as in the treatment group
 
   while(sum(matching_data$treatment_indicator) > 0 & (sum(matching_data$treatment_indicator) < length(matching_data$treatment_indicator))){
 
@@ -72,8 +72,6 @@ get_matched_df <- function(gamma, treatment_indicator, logit_propensity, seed){
    }
 
   }
-
-
 
 return(matched_data)
 }

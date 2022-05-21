@@ -1,83 +1,72 @@
-# TODO PL  Where is this used?
-true_rd <- c(0, -0.02, -0.05, -0.10, -0.1)
-
 # trial_run.R -----------------------------------------------------------
+sim_range <- 1:2
 
-# TODO PL  Documentation on what this does and the meaning of the parameters as well as return value
-run_sim <- function(sim_parameters, gamma_seq, seed){
-  data <- rlang::exec(generate_data, !!!sim_parameters)
-
-  sim_data <- data.frame(id = 1:nrow(data$sim_data),
-                         data$sim_data)
-
-  # TODO PL  Where are get_propensity() etc imported?
-  logit_propensity <- get_propensity_logit(treatment_indicator = sim_data$treatment_indicator,
-                                     predictors = sim_data[, 1:sim_parameters$n_covariates])
-
-  # Map over all gamma values
-  purrr::map_dfr(gamma_seq, ~{
-    matched_df <- get_matched_df(gamma = .x,
-                                 treatment_indicator = sim_data$treatment_indicator,
-                                 logit_propensity = logit_propensity,
-                                 seed = seed)
-
-    matched_data <- dplyr::right_join(sim_data, matched_df,
-                                      by = c("id", "treatment_indicator"))
-
-    delta <- compute_delta(matched_data)
-
-    average_delta <- mean(delta)
-
-    t_test <- t.test(delta,
-                     mu = 0,
-                     alternative = "two.sided",
-                     var.equal = TRUE)
-
-    significance <- t_test$p.value < 0.05
-
-    # TODO PL  where is this used?
-    std_error <- t_test$stderr
-
-    ci_95 <- t_test$conf.int
-
-    crude_bias <- bias_crude(sim_data, sim_parameters$beta)
-
-    ps_bias <- bias_ps(average_delta, true_treatment_effect = sim_parameters$beta)
-
-    reduction_bias <- bias_reduction(
-      crude_bias = crude_bias,
-      ps_bias = ps_bias
-    )
-
-    tibble::tibble(
-      repetition = seed,
-      true_effect = sim_parameters$beta,
-      estimated_effect = average_delta,
-      ps_bias = ps_bias,
-      crude_bias = crude_bias,
-      gamma = .x,
-      reduction_bias = reduction_bias,
-      significance = significance,
-      ci_95_low = ci_95[[1]],
-      ci_95_up = ci_95[[2]]
-    )
-  })
-}
-
-gamma_seq <- seq(0.05, 2.5, 0.05)
-repetition <- 1:50
-
-test_run <- purrr::map_df(repetition, ~{
-  run_sim(sim_parameters = independent_normal_0,
-          gamma_seq = gamma_seq,
+test_run2 <- purrr::map_df(sim_range, ~{
+  run_sim(scenario = "indep_normal_cont_2",
+          gamma_seq = seq(0.05, 2.5, 0.05),
+          sim_parameters = indep_normal_cont_2,
           seed = .x)
 })
 
-saveRDS(test_run, file = "analysis/data/test_run.rds")
+saveRDS(test_run2, file = "analysis/data/test_run2.rds")
 
-test_run11 <- purrr::map_df(repetition, ~{run_sim(sim_parameters = independent_normal_11,
-                                                gamma_seq = gamma_seq,
-                                                seed = .x)}
-)
 
-saveRDS(test_run11, file = "analysis/data/test_run11.rds")
+
+test_run_bin <- purrr::map_df(sim_range, ~{
+  run_sim(scenario = "indep_norm_bin_0",
+          gamma_seq = seq(0.05, 2.5, 0.05)[1:3],
+          sim_parameters = indep_norm_bin_0,
+          seed = .x)
+})
+
+saveRDS(test_run_bin, file = "analysis/data/test_run_bin.rds")
+
+indep_norm_bin_0
+
+
+test_run_bin2_long <- purrr::map_df(sim_range, ~{
+  run_sim(scenario = "indep_norm_bin_01",
+          gamma_seq = seq(0.05, 2.5, 0.05),
+          sim_parameters = indep_norm_bin_01,
+          seed = .x)
+})
+
+saveRDS(test_run_bin2_long, file = "analysis/data/test_run_bin2_long.rds")
+
+
+test_run_bin2_long11 <- purrr::map_df(11:20, ~{
+  run_sim(scenario = "indep_norm_bin_01",
+          gamma_seq = seq(0.05, 2.5, 0.05),
+          sim_parameters = indep_norm_bin_01,
+          seed = .x)
+})
+
+saveRDS(test_run_bin2_long11, file = "analysis/data/test_run_bin2_long11.rds")
+
+
+
+indep_norm_bin_01
+
+
+plot_bias_reduction(df = test_run_bin2_long,
+                    title = "Independant normal covariates - Binary Outcome")
+
+plot_mse(df = test_run_bin2_long,
+                    title = "Independant normal covariates - Binary Outcome")
+
+
+
+test_run_binx <- purrr::map_df(sim_range, ~{
+  run_sim(scenario = names(binary_scenarios)[13],
+          gamma_seq = seq(0.05, 2.5, 0.05)[1:2],
+          sim_parameters = binary_scenarios[[13]],
+          seed = .x)
+})
+
+
+test_run_binz <- purrr::map_df(sim_range, ~{
+  run_sim(scenario = names(continous_scenarios)[13],
+          gamma_seq = seq(0.05, 2.5, 0.05)[1:2],
+          sim_parameters = continous_scenarios[[13]],
+          seed = .x)
+})

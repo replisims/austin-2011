@@ -10,5 +10,6 @@ test_continuous <- generate_data(sample_size = 1000,
 
 glimpse(test_continuous)
 
-fit <- lm(outcome ~ x_1 + x_2 + x_3 + x_4 + x_5 + x_6 + x_7 + x_8 + x_9 + x_10, data = test_continuous$sim_data)
+fit <- lm(outcome ~ x_1 + x_2 + x_3 + x_4 + x_5 + x_6 + x_7 + x_8 + x_9 + x_10,
+          data = test_continuous$sim_data)
 summary(fit)

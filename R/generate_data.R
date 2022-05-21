@@ -48,12 +48,12 @@ generate_data <- function(sample_size = 10000,
 
   alpha_0_outcome <- switch(outcome_type,
                             binary = get_intercept(n_iter,
-                                   sample_size,
-                                   n_covariates,
-                                   n_normal,
-                                   cov_mat,
-                                   alpha,
-                                   target_mean = margin_prev),
+                                                   sample_size,
+                                                   n_covariates,
+                                                   n_normal,
+                                                   cov_mat,
+                                                   alpha,
+                                                   target_mean = margin_prev),
                             continuous = 0)
 
   beta <- switch(outcome_type,
@@ -68,19 +68,19 @@ generate_data <- function(sample_size = 10000,
                  continuous = beta)
 
   covariate_data <- sample_covariates(sample_size = sample_size,
-                                        n_covariates = n_covariates,
-                                        n_normal = n_normal,
-                                        cov_mat = cov_mat)
+                                      n_covariates = n_covariates,
+                                      n_normal = n_normal,
+                                      cov_mat = cov_mat)
 
 
   lin_pred_treat <- get_linear_predictor(alpha = c(alpha_0_treat, alpha),
                                          covariate_data = cbind(rep(1, sample_size),
-                                                            covariate_data))
+                                                                covariate_data))
 
 
   lin_pred_outcome <- get_linear_predictor(alpha = c(alpha_0_outcome, alpha),
                                            covariate_data = cbind(rep(1, sample_size),
-                                                                covariate_data))
+                                                                  covariate_data))
 
 
   treatment_prob <- 1/(1 + exp(-(lin_pred_treat)))
@@ -96,9 +96,9 @@ generate_data <- function(sample_size = 10000,
 
 
   list(sim_data = tibble::tibble(covariate_data,
-                         treatment_prob = treatment_prob,
-                         treatment_indicator = treatment_indicator,
-                         outcome = outcome),
+                                 treatment_prob = treatment_prob,
+                                 treatment_indicator = treatment_indicator,
+                                 outcome = outcome),
        alpha_0_treat = alpha_0_treat,
        alpha_0_outcome = alpha_0_outcome,
        beta = beta)
