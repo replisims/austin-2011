@@ -184,12 +184,12 @@ estimate_marginal_risk_diff <- function(candidate,
 #'
 #' @importFrom magrittr "%>%"
 get_intercept <- function(n_iter,
-                        sample_size,
-                        n_covariates,
-                        n_normal,
-                        cov_mat,
-                        alpha,
-                        target_mean){
+                          sample_size,
+                          n_covariates,
+                          n_normal,
+                          cov_mat,
+                          alpha,
+                          target_mean){
   1:n_iter %>% purrr::map_dbl(~{
 
   covariate_data <- sample_covariates(sample_size = sample_size,

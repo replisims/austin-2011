@@ -36,7 +36,7 @@ generate_data <- function(sample_size = 10000,
 
   if(n_normal>0){
     cov_mat <- get_cov_matrix(n_normal = n_normal,
-                                pair_cor = pair_cor)}
+                              pair_cor = pair_cor)}
 
   alpha_0_treat <- get_intercept(n_iter,
                                  sample_size,
@@ -87,7 +87,7 @@ generate_data <- function(sample_size = 10000,
 
   treatment_indicator <- sample_bernoulli(treatment_prob)
 
-  outcome_prob <- 1/(1+exp(-(lin_pred_outcome + beta*treatment_indicator)))
+  outcome_prob <- 1/(1 + exp(-(lin_pred_outcome + beta*treatment_indicator)))
 
   outcome <- switch(outcome_type,
                     binary = sample_bernoulli(outcome_prob),
