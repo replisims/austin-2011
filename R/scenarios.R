@@ -40,7 +40,7 @@ fixed_param_mix_2 <- list(n_normal = 1,
 
 
 
-# Independant normal covariates -------------------------------------------
+# Independent normal covariates -------------------------------------------
 indep_normal_cont <- c(fixed_parameters,
                        fixed_param_cont,
                        fixed_param_indep_normal)
@@ -129,7 +129,7 @@ mix_2_cont_2 <- c(mix_2_cont,
   #indep_bin
 
 
-# Independant binary covariates (continuous outcome) ----------------------
+# Independent binary covariates (continuous outcome) ----------------------
 
 indep_bin_cont <- c(fixed_parameters,
                        fixed_param_cont,

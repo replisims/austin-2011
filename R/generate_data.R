@@ -11,7 +11,7 @@
 #' @param n_iter integer indicating number of iterations
 #' @param prop_treated numerical value of intended proportion of treated individuals
 #' @param risk_diff numerical value of intended risk difference
-#' @param margin_prev numerical value of intenden marginal prevalence
+#' @param margin_prev numerical value of intended marginal prevalence
 #'
 #' @return a list with the following content
 #' \itemize{

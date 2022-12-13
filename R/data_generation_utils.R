@@ -81,7 +81,7 @@ get_linear_predictor <- function(alpha, covariate_data){
 #' Estimate intercept for given marginal probability
 #'
 #' @param candidate a candidate value for the target intercept
-#' @param linear_predictor the linear predictor withour the intercept
+#' @param linear_predictor the linear predictor without the intercept
 #'
 #' @return marginal probability using the candidate intercept
 
@@ -221,7 +221,7 @@ get_intercept <- function(n_iter,
 #' @param n_covariates number of covariates
 #' @param n_normal integer specifying the number of normal covariates (must be <= n_convariates)
 #' @param cov_mat covariance matrix
-#' @param alpha coeffcient vector (without intercept)
+#' @param alpha coefficient vector (without intercept)
 #' @param alpha_0_outcome intercept for outcome model
 #' @param risk_diff intended risk difference
 #'
