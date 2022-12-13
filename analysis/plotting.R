@@ -1,7 +1,11 @@
 library(ggplot2)
 library(tidyverse)
 
-performance_plot <- function(plot_data, performance_measure, y_axis, title){
+performance_plot <- function(plot_data, performance_measure, y_axis, title, outcome){
+
+  legend_label <- switch(outcome,
+                         "binary" = "True Risk Difference",
+                         "continuous" = "True delta")
 
   performance_measure <- dplyr::enquo(performance_measure)
   ggplot2::ggplot(plot_data, ggplot2::aes(x = gamma,
@@ -18,17 +22,17 @@ performance_plot <- function(plot_data, performance_measure, y_axis, title){
             labs(title = title) +
             ylab(y_axis) +
             xlab("Calipher width: SD of logit of PS") +
-            scale_color_manual(values = c("#00AFBB"),# "#E7B800", "#FC4E07"),
-                              name = "True Risk Difference") + #,
+            scale_color_manual(values = c("#00AFBB"), # "#E7B800", "#FC4E07"),
+                              name = legend_label) + #,
                               #breaks = c("0.5", "1", "2"),
                               #labels = c("D0.5", "D1", "D2")
-            scale_linetype_manual(values=c("solid"),
-                                  name = "True Risk Difference")
+            scale_linetype_manual(values = c("solid"),
+                                  name = legend_label)
 
           }
 # Plot reduction in Bias --------------------------------------------------
 
-plot_bias_reduction <- function(df, title, ...){
+plot_bias_reduction <- function(df, title, outcome, ...){
 
   # Summarizing plot data
   plot_data <- df %>%
@@ -38,12 +42,13 @@ plot_bias_reduction <- function(df, title, ...){
   performance_plot(plot_data = plot_data,
                    performance_measure = mean_bias_reduction,
                    title = title,
-                   y_axis = "Reduction in bias"
+                   y_axis = "Reduction in bias",
+                   outcome = outcome
                    )
 }
 # Plot mean squared error (MSE) -------------------------------------------
 
-plot_mse <- function(df, title, ...){
+plot_mse <- function(df, title, outcome, ...){
 
   # Summarizing plot data
   plot_data <- df %>%
@@ -53,8 +58,8 @@ plot_mse <- function(df, title, ...){
   performance_plot(plot_data = plot_data,
                    performance_measure = mse,
                    title = title,
-                   y_axis = "MSE"
-                   )
+                   y_axis = "MSE",
+                   outcome = outcome)
 }
 
 
