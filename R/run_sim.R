@@ -26,6 +26,9 @@ run_sim <- function(scenario = "unnamed",
                                     to = 2.5,
                                     by = 0.05),
                     seed = 42){
+
+  set.seed(seed = seed)
+
   start_time <- Sys.time()
 
   # Generate data according to simulation parameters
