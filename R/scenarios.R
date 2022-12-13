@@ -63,11 +63,9 @@ indep_normal_cont_2 <- c(indep_normal_cont,
 
 # Correlated covariates ---------------------------------------------------
 
-cor_normal_cont <- list(pair_cor = 0.25,
-                        alpha = c(1.1, 1.1, 1.1, 1.25, 1.25, 1.25, 1.5, 1.5, 1.5, 2),
-                          sigma_squared = 127.6056,
-                          outcome_type = "continuous",
-                          prop_treated = 0.25)
+cor_normal_cont <- c(fixed_parameters,
+                     fixed_param_cont,
+                     pair_cor = 0.25)
 
 cor_normal_cont_0 <- c(cor_normal_cont,
                        beta = 0)
@@ -112,7 +110,8 @@ mix_2_cont <- c(fixed_parameters,
                   fixed_param_cont,
                   fixed_param_mix_2)
 
-mix_2_cont_0 <- c(mix_2_cont)
+mix_2_cont_0 <- c(mix_2_cont,
+                  beta = 0)
 
 mix_2_cont_11 <- c(mix_2_cont,
                    beta = 1.1)
