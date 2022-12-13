@@ -1,0 +1,495 @@
+\documentclass[10,a4paperpaper,]{article}
+
+  \title{Replication Report}
+  \author{Primary Replicator\textsuperscript{1}, \and Co-pilot
+\textsuperscript{2}}
+  \date{%
+		\textsuperscript{1} University of someplace\\%
+		\textsuperscript{2} University of some other place~\\[2ex]
+		\today
+   }
+  
+
+
+\newcommand{\iblue}{008080}
+\newcommand{\igray}{d4dbde}
+
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{CSLReferences}%
+  {}%
+  {\par}
+
+\include{defs}
+
+
+\begin{document}
+
+
+\renewcommand{\contentsname}{Table of Contents}
+
+\renewcommand{\pagename}{Page}
+
+
+\urlstyle{same}
+
+\maketitle
+
+\subsection*{Abstract}
+
+\texttt{\textless{}a\ summary\ of\ the\ replication\ effort\textgreater{}}
+\vskip 2em
+
+\noindent\makebox[\textwidth]{\large Correspondence concerning this replication report should be addressed to:}
+
+\par
+
+\noindent\makebox[\textwidth]{\large primary\_replicator@someuni.edu}
+
+\par
+
+\clearpage
+
+\section{Introduction}
+
+This replication report documents the replication attempt of the
+simulation study Austin, P. C. (2011). Optimal caliper widths for
+propensity-score matching when estimating differences in means and
+differences in proportions in observational studies. Pharmaceutical
+Statistics, 10(2), 150--161. \url{https://doi.org/10.1002/pst.433} .
+Following the definition of Rougier et al. (2017) we understand the
+replication of a published study as writing and running new code based
+on the description provided in the original publication with the aim of
+obtaining the same results.
+
+\section{Method}
+
+\subsection{Information basis}
+
+The information for implementing the simulation code stemmed from the
+original publication which did not contain any supplemental material.
+
+\subsection{Data Generating Mechanism}
+
+Information provided in the original manuscript indicated that the
+following simulation factors were/ varied in generating the artificial
+data.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4667}}@{}}
+\toprule()
+\begin{minipage}[b]{\linewidth}\raggedright
+Simulation factor
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+No.~levels
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Levels
+\end{minipage} \\
+\midrule()
+\endhead
+\emph{Varied} & & \\
+Outcome type & 2 & continuous, binary \\
+Correlation between covariates & 2 & uncorrelated, pairwise correlation
+of 0.25 \\
+Covariate type & standard normal, Bernoulli random variable with
+parameter 0.5 & \\
+Effect size & 5 & for binary outcomes: True risk difference =
+0/-0.02/-0.05/-0.10//-0.15 \\
+for continuous outcomes: True mean difference = 0/ 1.1/ 1.25/ 1.5/ 2 &
+& \\
+& & \\
+\bottomrule()
+\end{longtable}
+
+\emph{Fixed} \textbar\textbar\textbar{}
+
+\subsubsection{Simulation Factor 1}
+
+\texttt{\textless{}More\ detail\ of\ how\ factor\ 1\ was\ varied\ and\ implemented\textgreater{}}
+
+\subsubsection{Simulation Factor 2}
+
+\texttt{\textless{}More\ detail\ of\ how\ factor\ 2\ was\ varied\ and\ implemented\textgreater{}}
+
+\subsubsection{Simulation Factor 3}
+
+\texttt{\textless{}More\ detail\ of\ how\ factor\ 3\ was\ varied\ and\ implemented\textgreater{}}
+
+\texttt{\textless{}If\ the\ design\ was\ not\ full-factorial\ describe\ the\ simulation\ scenarios\ by\ other\ means\textgreater{}}
+
+The simulation design was not full factorial. The authors \ldots{} ten
+scenarios, five with a continuous outcome and five corresponding
+scenarios with a binary outcome. The author refers to all but the
+independent normal covariates scenario as a ``sensitivity analysis''
+(p.~152).
+
+\subsubsection{Scenario 1c: Continous outcome Independant normal convariates}
+
+\subsubsection{Scenario 2c: Correlated normal covariates}
+
+\texttt{\textless{}You\ can\ add\ pseudocode\ or\ a\ flowchart\ to\ illustrate\ the\ data\ generation\ or\ the\ entire\ simulation\ design\textgreater{}}
+
+\begin{minipage}{\linewidth}
+Data generation can be summarized with the following pseudo code:
+
+\texttt{For 1000 repetitions of each of 400 unique scenarios:}
+\begin{itemize}[leftmargin=*] 
+    \item[--] \texttt{Set unique seed based on scenario id and number of repetition.}
+    \item[--] \texttt{...}
+    \item[--] \texttt{ While some condition < some other condition}
+    \begin{itemize}
+      \item[$\ast$] \texttt{Sample ... from the given distribution.}
+      \item[$\ast$] \texttt{Sample a sample size from the given distribution.}
+      \item[$\ast$] \texttt{Compute ... based on these random elements.}
+      \item[$\ast$] \texttt{Determine ... based on mechanism of current scenario.}
+    \end{itemize}
+    \item[--] \texttt{If some condition is > x:}
+    \begin{itemize}
+      \item[$\ast$] \texttt{Determine ... \& resample from corresponding ... model.}
+    \end{itemize}
+    \item[--] \texttt{Apply ...}
+\end{itemize}
+\end{minipage}
+\newpage
+
+\FloatBarrier 
+
+\subsection{Investigated Methods}
+
+The study investigates the effect of caliper width in the context of
+propensity score matching for estimating differences in mean (for
+continuous outcomes) and risk differences (for binary outcomes).
+
+Propensity-score matching as implemented in the context of the
+investigated study comprised ``pair-matching without replacement within
+a specified caliper distance {[}\ldots{]}. Using this approach, pairs of
+treated and untreated subjects are formed such that the difference in
+propensity scores between matched subjects differs by at most a fixed
+distance (the caliper width). In matching without replacement, each
+subject can be included in at most one matched set.'' (p.150)
+
+The study ``matched subjects on the logit of the propensity score using
+a caliper width of \(\gamma \sqrt{(\sigma_1^2 + \sigma_2^2)/2}\) where
+\(\sigma_i^2\) is the variance of the logit of the propensity score in
+the \(i\)th group.'' (p.) \(\gamma\) different propensity-score was
+allowed to ``range from 0.05 to 2.5 in increments of 0.05. Thus, 50
+matched samples were formed from each randomly generated data set.''
+
+\texttt{\textless{}Describe\ the\ methods\ that\ are\ investigated\ and\ how\ they\ are\ implemented\textgreater{}}
+
+\subsubsection{Method 1}
+
+\texttt{\textless{}Describe\ how\ the\ first\ method\ is\ defined\ and\ implemented.\ You\ can\ include\ equations\ and\ or\ R\ code.\ If\ applicable,\ mention\ specialized\ R\ packages,\ their\ version\ as\ well\ as,\ parameters\ of\ specific\ functions.\textgreater{}}
+
+\subsubsection{Method 2}
+
+\texttt{\textless{}Describe\ how\ the\ second\ method\ is\ defined\ and\ implemented.\ You\ can\ include\ equations\ and\ or\ R\ code.\ If\ applicable,\ mention\ specialized\ R\ packages,\ their\ version\ as\ well\ as,\ parameters\ of\ specific\ functions.\textgreater{}}
+
+\subsection{Performance measures}
+
+The study investigated ``the impact of caliper width on reduction in
+bias, mean squared error (MSE), coverage of confidence intervals, and
+type 1 error rates.'' (p.151)
+
+\texttt{\textless{}Describe\ which\ performance\ measures\ are\ compared,\ if\ applicable\ mention\ specialized\ R\ packages,\ their\ versions,\ as\ well\ as\ parameter\ settings\ of\ functions.\textgreater{}}
+
+The following flowchart describes the simulation design
+
+\begin{figure}
+\includegraphics[width=450pt]{flowchart} \caption{Flow chart of data generating mechanism}\label{fig:unnamed-chunk-1}
+\end{figure}
+
+\subsection{Technical implementation}
+
+While the original simulation study was carried out in
+\texttt{\textless{}computational\ environment\ of\ original\ study\textgreater{}}
+our replication was implemented using the R programming environment
+(details regarding software versions can be obtained from the section
+Reproducibility Information). The corresponding R code can be obtained
+from \url{https://github.com/replisims/your_repo}.
+
+The following table provides an overview of replicator degrees of
+freedom, i.e.~decisions that had to be made by the replicators because
+of insufficient or contradicting information. Issues were resolved by
+discussion among the replicators. Decisions were based on what the
+replicators perceived to be the most likely implementation with
+likeliness estimated by common practice and/or guideline
+recommendations. Wherever feasible multiple interpretations where
+implemented.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3636}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3636}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2727}}@{}}
+\toprule()
+\begin{minipage}[b]{\linewidth}\raggedright
+Issue
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Replicator decision
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Justification
+\end{minipage} \\
+\midrule()
+\endhead
+Data dependence & each scenario is implemented in independently
+generated data & Best practice (Burton et al. 2006) \\
+\bottomrule()
+\end{longtable}
+
+\subsection{Some issue}
+
+\texttt{\textless{}More\ details\ on\ how\ the\ information\ provided\ was\ insufficient,\ unclear\ or\ vague\textgreater{}}
+\emph{``Some weird quote from the original article that you could not
+make any sense of''} (p.XY)
+
+\subsection{Another issue}
+
+\texttt{\textless{}More\ details\ on\ how\ the\ information\ provided\ was\ insufficient,\ unclear\ or\ vague\textgreater{}}
+\emph{``Some weird quote from the original article that you could not
+make any sense of''} (p.XY)
+
+\section{Results}
+
+\subsection{Simulation descriptives}
+
+\texttt{\textless{}Describe\ the\ sampling\ distribution\ if\ any\ of\ the\ simulation\ parameters\ were\ sampled\textgreater{}}
+
+\subsection{Replication of result figures}
+\subsubsection{Outcome 1}
+
+\texttt{\textless{}Provide\ the\ information\ that\ were\ presented\ in\ figure\ form\ in\ the\ original\textgreater{}}
+
+\subsection{Replication of result tables}
+
+\texttt{\textless{}Compare\ any\ tabulated\ data\ to\ the\ original\textgreater{}}
+
+\subsection{Replication of results presented in text form }
+
+\texttt{\textless{}If\ the\ text\ describes\ any\ results\ using\ words\ describe\ how\ that\ relates\ to\ your\ findings.\textgreater{}}
+
+\FloatBarrier
+\section{Discussion}
+
+\subsection{Replicability}
+
+\texttt{\textless{}Provide\ a\ general\ statement\ of\ how\ you\ experienced\ the\ replication\ process.\ Was\ it\ easy?\ What\ made\ it\ easy\ or\ difficult?\textgreater{}}
+
+\subsection{Replicator degrees of freedom}
+
+\texttt{\textless{}Here\ you\ can\ discuss\ the\ replicator\ degrees\ of\ freedom.\ What\ could\ the\ authors\ have\ done\ to\ make\ it\ more\ clear?\ Do\ you\ think\ the\ replicator\ degrees\ of\ freedom\ are\ so\ extensive\ that\ they\ could\ influence\ the\ results?\textgreater{}}
+
+\subsection{Equivalence of results}
+
+\texttt{\textless{}How\ would\ you\ judge\ the\ overall\ equivalence\ of\ results?\ Are\ the\ orders\ of\ magnitude\ comparable?\ Are\ trends\ in\ the\ same\ direction?\ Would\ you\ draw\ the\ same\ conclusions\ as\ the\ authors\ based\ on\ your\ replication?\ Were\ some\ results\ not\ comparable\ because\ of\ insufficient\ figure\ resolution\ or\ labeling?\ Did\ the\ authors\ ommit\ some\ results\ which\ consequently\ cannot\ be\ compared?\textgreater{}}
+
+\section{Acknowledgments}
+
+\texttt{\textless{}Acknowledge\ the\ help\ of\ anyone\ who\ assisted\ you\ in\ the\ process\textgreater{}}
+
+\section{Contributions}
+
+Authors made the following contributions according to the CRediT
+framework \url{https://casrai.org/credit/}
+
+Primary Replicator:
+
+\begin{itemize}
+\tightlist
+\item
+  Data Curation\\
+\item
+  Formal Analysis (lead)\\
+\item
+  Investigation\\
+\item
+  Software\\
+\item
+  Visualization (lead)\\
+\item
+  Writing - Original Draft Preparation\\
+\item
+  Writing - Review \& Editing
+\end{itemize}
+
+Co-Pilot:
+
+\begin{itemize}
+\tightlist
+\item
+  Formal Analysis (supporting)\\
+\item
+  Investigation\\
+\item
+  Software (supporting)\\
+\item
+  Visualization (supporting)\\
+\item
+  Validation\\
+\item
+  Writing - Review \& Editing
+\end{itemize}
+
+\newpage
+
+\section*{References}
+\begingroup
+\hphantom{x}
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{1}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-burton_design_2006}{}}%
+Burton, Andrea, Douglas G. Altman, Patrick Royston, and Roger L. Holder.
+2006. {``The Design of Simulation Studies in Medical Statistics.''}
+\emph{Statistics in Medicine} 25 (24): 4279--92.
+\url{https://doi.org/10.1002/sim.2673}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-rougier_sustainable_2017-1}{}}%
+Rougier, Nicolas P., Konrad Hinsen, Frédéric Alexandre, Thomas Arildsen,
+Lorena A. Barba, Fabien C. Y. Benureau, C. Titus Brown, et al. 2017.
+{``Sustainable Computational Science: The {ReScience} Initiative.''}
+\emph{PeerJ Computer Science} 3 (December): e142.
+\url{https://doi.org/10.7717/peerj-cs.142}.
+
+\end{CSLReferences}
+
+\FloatBarrier
+\endgroup
+\newpage
+
+\section*{Appendix}
+
+\subsection*{Additional result}
+
+\texttt{\textless{}insert\ additional\ results\ not\ reported\ in\ the\ original\ article\ or\ results\ presented\ in\ an\ alternative\ way\textgreater{}}
+
+\subsection{Code organization}
+
+The code and the files associated are organized in the form of a
+research compendium which can be found in the following git repository
+\texttt{https://github.com/replisims/your\_repo}
+
+\begin{verbatim}
+## .
+## +-- defs.tex
+## +-- flowchart.PNG
+## +-- Lato-Black.ttf
+## +-- Lato-BlackItalic.ttf
+## +-- Lato-Bold.ttf
+## +-- Lato-BoldItalic.ttf
+## +-- Lato-Italic.ttf
+## +-- Lato-Regular.ttf
+## +-- references.bib
+## +-- Replication Report Austin 2010.Rmd
+## +-- Replication-Report-Austin-2010.log
+## +-- Replication-Report-Austin-2010.pdf
+## +-- Replication-Report-Austin-2010.Rmd
+## +-- Replication-Report-Austin-2010.tex
+## +-- UbuntuMono-Bold.ttf
+## +-- UbuntuMono-BoldItalic.ttf
+## +-- UbuntuMono-Italic.ttf
+## \-- UbuntuMono-Regular.ttf
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{foldername}: contains
+  \texttt{\textless{}insert\ description\textgreater{}}
+\item
+  \texttt{filename}: contains
+  \texttt{\textless{}insert\ description\textgreater{}}
+\item
+  \ldots{}
+\end{itemize}
+
+\subsubsection*{Reproducibility Information}
+
+This report was last updated on 2022-12-05 10:54:51. The simulation
+replication was conducted using the following computational environment
+and dependencies:
+
+\FloatBarrier
+
+\begin{verbatim}
+## - Session info ---------------------------------------------------------------
+##  setting  value
+##  version  R version 4.1.3 (2022-03-10)
+##  os       Windows 10 x64 (build 19045)
+##  system   x86_64, mingw32
+##  ui       RTerm
+##  language (EN)
+##  collate  English_United States.1252
+##  ctype    English_United States.1252
+##  tz       Europe/Berlin
+##  date     2022-12-05
+##  pandoc   2.18 @ C:/Program Files/RStudio/bin/quarto/bin/tools/ (via rmarkdown)
+## 
+## - Packages -------------------------------------------------------------------
+##  package        * version    date (UTC) lib source
+##  assertthat       0.2.1      2019-03-21 [1] CRAN (R 4.1.2)
+##  cachem           1.0.6      2021-08-19 [1] CRAN (R 4.1.2)
+##  callr            3.7.1      2022-07-13 [1] CRAN (R 4.1.3)
+##  cli              3.4.1      2022-09-23 [1] CRAN (R 4.1.3)
+##  crayon           1.5.1      2022-03-26 [1] CRAN (R 4.1.3)
+##  DBI              1.1.3      2022-06-18 [1] CRAN (R 4.1.3)
+##  devtools         2.4.3      2021-11-30 [1] CRAN (R 4.1.2)
+##  digest           0.6.29     2021-12-01 [1] CRAN (R 4.1.2)
+##  dplyr          * 1.0.9      2022-04-28 [1] CRAN (R 4.1.3)
+##  ellipsis         0.3.2      2021-04-29 [1] CRAN (R 4.1.2)
+##  evaluate         0.15       2022-02-18 [1] CRAN (R 4.1.3)
+##  fansi            1.0.3      2022-03-24 [1] CRAN (R 4.1.3)
+##  fastmap          1.1.0      2021-01-25 [1] CRAN (R 4.1.2)
+##  fs               1.5.2      2021-12-08 [1] CRAN (R 4.1.2)
+##  generics         0.1.3      2022-07-05 [1] CRAN (R 4.1.3)
+##  glue             1.6.2      2022-02-24 [1] CRAN (R 4.1.2)
+##  htmltools        0.5.2      2021-08-25 [1] CRAN (R 4.1.2)
+##  knitr          * 1.39       2022-04-26 [1] CRAN (R 4.1.3)
+##  lifecycle        1.0.1      2021-09-24 [1] CRAN (R 4.1.2)
+##  magrittr         2.0.2      2022-01-26 [1] CRAN (R 4.1.2)
+##  memoise          2.0.1      2021-11-26 [1] CRAN (R 4.1.2)
+##  pillar           1.8.0      2022-07-18 [1] CRAN (R 4.1.3)
+##  pkgbuild         1.3.1      2021-12-20 [1] CRAN (R 4.1.2)
+##  pkgconfig        2.0.3      2019-09-22 [1] CRAN (R 4.1.2)
+##  pkgload          1.3.0      2022-06-27 [1] CRAN (R 4.1.3)
+##  prettyunits      1.1.1      2020-01-24 [1] CRAN (R 4.1.2)
+##  processx         3.7.0      2022-07-07 [1] CRAN (R 4.1.3)
+##  ps               1.6.0      2021-02-28 [1] CRAN (R 4.1.2)
+##  purrr            0.3.4      2020-04-17 [1] CRAN (R 4.1.2)
+##  R6               2.5.1      2021-08-19 [1] CRAN (R 4.1.2)
+##  remotes          2.4.2      2021-11-30 [1] CRAN (R 4.1.2)
+##  RepliSimReport   0.0.0.9000 2022-02-03 [1] Github (replisims/RepliSimReport@5f14003)
+##  rlang            1.0.4      2022-07-12 [1] CRAN (R 4.1.3)
+##  rmarkdown        2.13       2022-03-10 [1] CRAN (R 4.1.3)
+##  rstudioapi       0.13       2020-11-12 [1] CRAN (R 4.1.2)
+##  sessioninfo      1.2.2      2021-12-06 [1] CRAN (R 4.1.2)
+##  stringi          1.7.8      2022-07-11 [1] CRAN (R 4.1.3)
+##  stringr          1.4.0      2019-02-10 [1] CRAN (R 4.1.2)
+##  tibble           3.1.8      2022-07-22 [1] CRAN (R 4.1.3)
+##  tidyselect       1.1.2      2022-02-21 [1] CRAN (R 4.1.3)
+##  usethis          2.1.5      2021-12-09 [1] CRAN (R 4.1.2)
+##  utf8             1.2.2      2021-07-24 [1] CRAN (R 4.1.2)
+##  vctrs            0.4.1      2022-04-13 [1] CRAN (R 4.1.3)
+##  xfun             0.31       2022-05-10 [1] CRAN (R 4.1.3)
+##  xtable         * 1.8-4      2019-04-21 [1] CRAN (R 4.1.2)
+##  yaml             2.3.5      2022-02-21 [1] CRAN (R 4.1.2)
+## 
+##  [1] C:/Users/alohmann/Documents/R/win-library/4.1
+##  [2] C:/Program Files/R/R-4.1.3/library
+## 
+## ------------------------------------------------------------------------------
+\end{verbatim}
+
+The current Git commit details are:
+
+\begin{verbatim}
+## Local:    comments C:/Users/alohmann/Desktop/sort/austin2011/austin2011
+## Remote:   comments @ origin (https://github.com/replisims/austin-2011.git)
+## Head:     [9644e69] 2022-05-21: Merge branch 'master' into comments
+\end{verbatim}
+
+
+\end{document}

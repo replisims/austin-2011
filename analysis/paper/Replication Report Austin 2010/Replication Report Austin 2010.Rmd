@@ -1,0 +1,292 @@
+---
+title: Replication Report
+author1: Anna Lohmann\textsuperscript{1}, 
+author2: Rolf Groenwold \textsuperscript{2}
+organization1: Leiden University Medical Center
+organization2: EAH Jena
+date: \today
+params:
+  iblue: 008080
+  igray: d4dbde
+documentclass: article
+fontsize: 10
+papersize: a4paper
+bibliography      : ["references.bib"]
+output: 
+  RepliSimReport:::replisim_report:
+    keep_tex: TRUE
+    latex_engine: xelatex
+    resetStyleFiles: FALSE
+header-includes: 
+  - \newcommand{\iblue}{`r params$iblue`}
+  - \newcommand{\igray}{`r params$igray`}
+ 
+include-before:
+  - \renewcommand{\contentsname}{Table of Contents}
+  - \renewcommand{\pagename}{Page}
+---
+
+```{r setup, include = FALSE}
+# packages
+library(dplyr)
+library(knitr)
+library(xtable)
+
+# settings
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+\urlstyle{same} <!--ensure urls have the same style as the rest of the text-->
+
+\maketitle <!--insert title-->
+
+\subsection*{Abstract}
+`<a summary of the replication effort>`
+\vskip 2em
+
+\noindent\makebox[\textwidth]{\large Correspondence concerning this replication report should be addressed to:}\par
+\noindent\makebox[\textwidth]{\large anna.lohmann@eah-jena.de}\par
+
+\clearpage
+
+\section{Introduction}
+
+This replication report documents the replication attempt of the simulation study Austin, P. C. (2011). Optimal caliper widths for propensity-score matching when estimating differences in means and differences in proportions in observational studies. Pharmaceutical Statistics, 10(2), 150–161. https://doi.org/10.1002/pst.433
+. 
+
+
+Data from observational studies 
+The author assessed the effect of varying caliper width when estimating differences in means and differences in proportions from data from observational studies using propensity-score matching.
+Performance measures of interest were ... ... and ....
+
+Following the definition of @rougier_sustainable_2017-1 we understand the replication of a published study as writing and running new code based on the description provided in the original publication with the aim of obtaining the same results.
+
+\section{Method}
+
+\subsection{Information basis}
+The information for implementing the simulation code stemmed from the original publication which did not contain any supplemental material.
+
+\subsection{Data Generating Mechanism}
+Data simulation involved generating observational study data with continuous as well as binary outcomes.
+
+Information provided in the original manuscript indicated that the following simulation factors were varied in generating the artificial data. 
+
+
+| Simulation factor | No. levels | Levels|
+|------|--|-------|
+| *Varied*|||   
+| Outcome type| 2 | continuous, binary|
+| Correlation between covariates| 2 | uncorrelated, pairwise correlation of 0.25|
+| Covariate type| 2 | standard normal, Bernoulli random variable with parameter 0.5|
+|Effect size| 5| For binary outcomes: True risk difference = 0/ -0.02/ -0.05/ -0.10/ -0.15|
+|||For continuous outcomes: True mean difference = 0/ 1.1/ 1.25/ 1.5/ 2|
+| *Fixed*||| 
+|Sample size| 1| n = 10000|
+|Number of covariates|1 | 10|
+|Proportion treated| 1| 0.25|
+\subsubsection{Outcome type}
+Data comprising two different outcome types "binary" and "continuous" were generated.
+These outcome types corresponded to two different effect estimates of interest "risk difference" and "mean difference".
+
+Binary outcome data was generated such that `the probability of the outcome would be approximately 0.29 if all subjects in the population were not exposed.
+
+
+`<More detail of how factor 1 was varied and implemented>`
+\subsubsection{Simulation Factor 2}
+`<More detail of how factor 2 was varied and implemented>`
+\subsubsection{Simulation Factor 3}
+`<More detail of how factor 3 was varied and implemented>`
+
+`<If the design was not full-factorial describe the simulation scenarios by other means>`
+
+The simulation design was not full factorial. 
+The authors describe ten scenarios, five with a continuous outcome and five corresponding scenarios with a binary outcome.
+The author refers to all but the independent normal covariates scenario as a "sensitivity analysis" (p. 152).
+
+
+
+\subsubsection{Scenario 1c: Continous outcome Independant normal convariates}
+
+\subsubsection{Scenario 2c: Correlated normal covariates}
+
+
+
+`<You can add pseudocode or a flowchart to illustrate the data generation or the entire simulation design>`
+\begin{minipage}{\linewidth}
+Data generation can be summarized with the following pseudo code:
+
+\texttt{For 1000 repetitions of each of 400 unique scenarios:}
+\begin{itemize}[leftmargin=*] 
+	\item[--] \texttt{Set unique seed based on scenario id and number of repetition.}
+	\item[--] \texttt{...}
+	\item[--] \texttt{ While some condition < some other condition}
+	\begin{itemize}
+	  \item[$\ast$] \texttt{Sample ... from the given distribution.}
+	  \item[$\ast$] \texttt{Sample a sample size from the given distribution.}
+	  \item[$\ast$] \texttt{Compute ... based on these random elements.}
+	  \item[$\ast$] \texttt{Determine ... based on mechanism of current scenario.}
+	\end{itemize}
+	\item[--] \texttt{If some condition is > x:}
+	\begin{itemize}
+	  \item[$\ast$] \texttt{Determine ... \& resample from corresponding ... model.}
+	\end{itemize}
+	\item[--] \texttt{Apply ...}
+\end{itemize}
+\end{minipage}
+\newpage
+\FloatBarrier <!-- ensure there are no plots in the references -->
+
+\subsection{Investigated Methods}
+The study investigates the effect of caliper width in the context of propensity score matching for estimating differences in mean (for continuous outcomes) and risk differences (for binary outcomes).
+
+Propensity-score matching as implemented in the context of the investigated study
+comprised "pair-matching without replacement within a specified caliper distance [...]. 
+Using this approach, pairs of treated and untreated subjects are formed such that the difference in propensity scores between matched subjects differs by at most a fixed distance (the caliper width). 
+In matching without replacement, each subject can be included in at most one matched set." (p.150)
+
+
+The study "matched subjects on the logit of the propensity score using a caliper width of 
+$\gamma \sqrt{(\sigma_1^2 + \sigma_2^2)/2}$ where $\sigma_i^2$ is the variance of the logit of the propensity score in the $i$th group." (p.??)
+$\gamma$ different propensity-score  was allowed to "range from 0.05 to 2.5 in increments of 0.05.
+Thus, 50 matched samples were formed from each randomly generated data set."
+
+`<Describe the methods that are investigated and how they are implemented>`
+
+\subsubsection{Method 1}
+`<Describe how the first method is defined and implemented. You can include equations and or R code. If applicable, mention specialized R packages, their version as well as, parameters of specific functions.>`
+
+\subsubsection{Method 2}
+`<Describe how the second method is defined and implemented. You can include equations and or R code. If applicable, mention specialized R packages, their version as well as, parameters of specific functions.>`
+
+\subsection{Performance measures}
+The study investigated "the impact of caliper width on reduction in bias, mean squared error (MSE), coverage of confidence intervals, and type 1 error rates." (p.151) 
+
+`<Describe which performance measures are compared, if applicable mention specialized R packages, their versions, as well as parameter settings of functions.>`
+
+The following flowchart describes the simulation design
+```{r, out.width='450pt', fig.cap= "Flow chart of data generating mechanism"}
+knitr::include_graphics("flowchart.PNG")
+```
+
+\subsection{Technical implementation}
+The original simulation study does not specify the software environment it was carried out in.
+Our replication was implemented using the R programming environment (details regarding software versions can be obtained from the section Reproducibility Information). 
+The corresponding R code can be obtained from https://github.com/replisims/austin2011. 
+<!-- Add zenodo doi once obtained-->
+
+The following table provides an overview of replicator degrees of freedom, 
+i.e. decisions that had to be made by the replicators because of insufficient or contradicting information. 
+Issues were resolved by discussion among the replicators. 
+Decisions were based on what the replicators perceived to be the most likely implementation with likeliness estimated by common practice and/or guideline recommendations.
+Wherever feasible multiple interpretations where implemented.
+
+| Issue| Replicator decision| Justification |
+|--------|--------|------|
+| Given $\beta$s did not correspond to intended treatment effect | $\beta$ approximated by binary search.              | Common practice of the replicators in their own simulation studies.|  
+
+\subsection{Some issue}
+`<More details on how the information provided was insufficient, unclear or vague>`
+*"Some weird quote from the original article that you could not make any sense of"* (p.XY)
+
+\subsection{Another issue}
+`<More details on how the information provided was insufficient, unclear or vague>`
+*"Some weird quote from the original article that you could not make any sense of"* (p.XY)
+
+\section{Results}
+
+\subsection{Simulation descriptives}
+`<Describe the sampling distribution if any of the simulation parameters were sampled>`
+\subsection{Replication of result figures}
+\subsubsection{Outcome 1}
+`<Provide the information that were presented in figure form in the original>`
+\subsection{Replication of result tables}
+`<Compare any tabulated data to the original>`
+\subsection{Replication of results presented in text form }
+`<If the text describes any results using words describe how that relates to your findings.>`
+
+\FloatBarrier
+\section{Discussion}
+
+\subsection{Replicability}
+`<Provide a general statement of how you experienced the replication process. Was it easy? What made it easy or difficult?>`
+
+\subsection{Replicator degrees of freedom}
+`<Here you can discuss the replicator degrees of freedom. What could the authors have done to make it more clear? Do you think the replicator degrees of freedom are so extensive that they could influence the results?>`
+
+\subsection{Equivalence of results}
+`<How would you judge the overall equivalence of results? Are the orders of magnitude comparable? Are trends in the same direction? Would you draw the same conclusions as the authors based on your replication? Were some results not comparable because of insufficient figure resolution or labeling? Did the authors ommit some results which consequently cannot be compared?>`
+
+
+\section{Acknowledgments}
+`<Acknowledge the help of anyone who assisted you in the process>`
+
+\section{Contributions}
+Authors made the following contributions according to the CRediT framework https://casrai.org/credit/
+
+Anna Lohmann:
+
+- Data Curation  
+- Formal Analysis (lead)  
+- Investigation  
+- Software  
+- Visualization (lead)  
+- Writing - Original Draft Preparation  
+- Writing - Review & Editing  
+
+Rolf H. H. Groenwold :
+
+- Formal Analysis (supporting)  
+- Investigation  
+- Software (supporting)  
+- Visualization (supporting)  
+- Validation  
+- Writing - Review & Editing   
+
+\newpage
+
+\section*{References}
+\begingroup
+\hphantom{x}
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+<div id="refs" custom-style="Bibliography"></div>
+\FloatBarrier
+\endgroup
+\newpage
+
+\section*{Appendix}
+
+\subsection*{Additional result}
+`<insert additional results not reported in the original article or results presented in an alternative way>`
+\subsection{Code organization}
+
+The code and the files associated are organized in the form of a research compendium
+which can be found in the following git repository `https://github.com/replisims/your_repo`
+
+
+```{r code_structure, cache = FALSE}
+# which R packages and versions?
+if ("fs" %in% installed.packages()) fs::dir_tree(path = ".", recurse = TRUE)
+```
+
+
+- `foldername`: contains `<insert description>`
+- `filename`: contains `<insert description>`
+- ...
+
+\subsubsection*{Reproducibility Information}
+
+This report was last updated on `r Sys.time()`. 
+The simulation replication was conducted using the following computational environment and dependencies: 
+
+\FloatBarrier
+```{r colophon, cache = FALSE}
+# which R packages and versions?
+if ("devtools" %in% installed.packages()) devtools::session_info()
+```
+
+The current Git commit details are:
+
+```{r git}
+# what commit is this file at? 
+if ("git2r" %in% installed.packages() & git2r::in_repository(path = ".")) git2r::repository(here::here())  
+```
