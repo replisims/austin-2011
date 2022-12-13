@@ -76,7 +76,7 @@ difference_proportions <- function(matched_data){
   # b = pairs in which the treated subject experienced the event
   # while the untreated subject did not
 
-  # c = pairs in which the untreated subjext experienced the event while the treated subject does not
+  # c = pairs in which the untreated subject experienced the event while the treated subject does not
 
   b <- sum(matched_data$outcome[even_index] == 1 & matched_data$outcome[even_index - 1] == 0)
   c <- sum(matched_data$outcome[even_index] == 0 & matched_data$outcome[even_index - 1] == 1)
@@ -86,7 +86,7 @@ difference_proportions <- function(matched_data){
 
 #' Estimated variance of difference in proportions from matched pairs
 #'
-#' @param matched_data matched dataframe with uneven rows corresponding to exposed
+#' @param matched_data matched data frame with uneven rows corresponding to exposed
 #' subjects and even rows to unexposed
 #'
 #' @return estimated variance
@@ -103,7 +103,7 @@ var_difference_proportions <- function(matched_data){
 
 #' Obtain contingency matrix from matched data
 #'
-#' @param matched_data dataframe with matched pairs uneven rows corresponding to exposed
+#' @param matched_data data frame with matched pairs uneven rows corresponding to exposed
 #' subjects and even rows to unexposed
 #'
 #' @return
