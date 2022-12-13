@@ -34,27 +34,36 @@ sample_covariates <- function(sample_size,
                               n_normal,
                               cov_mat = NULL){
 
-#  covariate_data <- tibble(x_0 = rep(1, sample_size)) #intercept
-
   # Sampling the normal covariates
 
   if(n_normal > 0){
-    covariate_data <- MASS::mvrnorm(n = sample_size,
-                              mu = rep(0, n_normal),
-                              Sigma = cov_mat) %>%
-                        tibble::as_tibble() %>%
-                          rlang::set_names(paste0("x_", 1:n_normal)) #%>%
-                              #  cbind(covariate_data, .)
+    covariate_data_norm <- MASS::mvrnorm(n = sample_size,
+                                         mu = rep(0, n_normal),
+                                         Sigma = cov_mat) %>%
+      tibble::as_tibble() %>%
+      rlang::set_names(paste0("x_", 1:n_normal))
   }
+
   # Sample the Bernoulli covariates
 
   if(n_normal < n_covariates){
-    covariate_data <- paste0("x_", (n_normal+1):n_covariates) %>%
-                        purrr::imap_dfc(~{rbinom(sample_size, size = 1, prob = 0.5) %>%
-                            tibble::as_tibble() %>%
-                              rlang::set_names(.x)})# %>%
-                              #  cbind(covariate_data, .)
+    covariate_data_bin <- paste0("x_", (n_normal + 1):n_covariates) %>%
+      purrr::imap_dfc(~{rbinom(sample_size, size = 1, prob = 0.5) %>%
+          tibble::as_tibble() %>%
+          rlang::set_names(.x)})
+  if(n_normal != 0){
+    covariate_data <- cbind(covariate_data_norm, covariate_data_bin)
   }
+
+  if(n_normal == 0){
+    covariate_data <- covariate_data_bin
+  }
+  }
+
+  if(n_normal == n_covariates){
+    covariate_data <- covariate_data_norm
+  }
+
   return(covariate_data)
 }
 
