@@ -3,7 +3,7 @@
 
 #' Obtain within-matched pair difference d
 #'
-#' @param matched_df matched dataframe with uneven rows corresponding to exposed
+#' @param matched_df matched data frame with uneven rows corresponding to exposed
 #' subjects and even rows to unexposed
 #'
 #' @return vector of within-matched pair differences
