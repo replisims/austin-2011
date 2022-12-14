@@ -83,24 +83,49 @@ Information provided in the original manuscript indicated that the following sim
 |Sample size| 1| n = 10000|
 |Number of covariates|1 | 10|
 |Proportion treated| 1| 0.25|
+
+
+
+These simulation factors are not combined in a full-factorial way but rather comprise 5 scenarios.
+For each of these 5 scenarios the simulation factors outcome-type (2 levels) and  
+effect size (5 levels) are systematically varied resulting in a total of 50 scenarios each of which
+is run with a unique seed for 1000 repetitions.
+
+The author refers to all but the independent normal covariates scenario as a "sensitivity analysis" (p. 152).
+
+
+|Simulation factor| Independent normal | Correlated normal| Mixed 1| Mixed 2| Independent binary|
+|Correlation between covariates| none| 0.25| none| none | none|
+| Covariate type| 10 standard normal| 10 standard normal| 5 standard normal, 5 Bernoulli random variable with parameter 0.5| 9 Bernoulli random variable with parameter 0.5, 1 standard normal| 10 Bernoulli random variable with parameter 0.5|
+
+
+
 \subsubsection{Outcome type}
 Data comprising two different outcome types "binary" and "continuous" were generated.
 These outcome types corresponded to two different effect estimates of interest "risk difference" and "mean difference".
 
 Binary outcome data was generated such that `the probability of the outcome would be approximately 0.29 if all subjects in the population were not exposed.
 
+\subsubsection{Correlation between covariates}
+Most scenarios assumed covariates to be independently distributed.
+The "correlated normal scenario"comprised 10 covariates from a multivariate normal distribution with pairwise correlations equal to 0.25.
+We implemented this by adapting the covariance matrix according to the intended correlations prior to sampling covariate data.
 
-`<More detail of how factor 1 was varied and implemented>`
-\subsubsection{Simulation Factor 2}
-`<More detail of how factor 2 was varied and implemented>`
-\subsubsection{Simulation Factor 3}
-`<More detail of how factor 3 was varied and implemented>`
 
-`<If the design was not full-factorial describe the simulation scenarios by other means>`
+\subsubsection{Covariate type}
+The scenarios "independent normal" as well as "correlated normal" comprised 10 covariates from multivariate normal distributions.
+The scenarios "mixed 1" and "mixed 2" comprised both independent standard normal as well as independent Bernoulli (0.5) covariates.
+In scenario "mixed 1" the first five covariates were assumed to be independent Bernoulli and in scenario "mixed 2" the first nine.
 
-The simulation design was not full factorial. 
-The authors describe ten scenarios, five with a continuous outcome and five corresponding scenarios with a binary outcome.
-The author refers to all but the independent normal covariates scenario as a "sensitivity analysis" (p. 152).
+
+\subsubsection{Effect size}
+For each scenario and each outcome type data is simulated corresponding to five different effect sizes.
+For the binary outcome scenarios risk differences of 0, 1.1, 1.25, 1.5 and 2 were implemented.
+To simulate these risk differences we optimized the coefficient $beta$ i.e. the log-odds ratio relating the treatment to the outcome via binary search.
+This approach differs from the author, who report having used the following $beta$s for risk differences of 0, -0.02, -0.05, -0.10, -0.15:
+0, 0.9077272, 0.7836084, 0.6086645, 0.4658031.
+
+For the continuous outcome scenarios ...
 
 
 
@@ -149,13 +174,9 @@ $\gamma \sqrt{(\sigma_1^2 + \sigma_2^2)/2}$ where $\sigma_i^2$ is the variance o
 $\gamma$ different propensity-score  was allowed to "range from 0.05 to 2.5 in increments of 0.05.
 Thus, 50 matched samples were formed from each randomly generated data set."
 
-`<Describe the methods that are investigated and how they are implemented>`
+Due to ... we deviated from this ... and reduced the number of of different caliper width to 11:
+0.05, 0.25, 0.50, 0.75, 1.00, 1.25, 1.50, 1.75, 2.00, 2.25, 2.50
 
-\subsubsection{Method 1}
-`<Describe how the first method is defined and implemented. You can include equations and or R code. If applicable, mention specialized R packages, their version as well as, parameters of specific functions.>`
-
-\subsubsection{Method 2}
-`<Describe how the second method is defined and implemented. You can include equations and or R code. If applicable, mention specialized R packages, their version as well as, parameters of specific functions.>`
 
 \subsection{Performance measures}
 The study investigated "the impact of caliper width on reduction in bias, mean squared error (MSE), coverage of confidence intervals, and type 1 error rates." (p.151) 
@@ -181,7 +202,10 @@ Wherever feasible multiple interpretations where implemented.
 
 | Issue| Replicator decision| Justification |
 |--------|--------|------|
-| Given $\beta$s did not correspond to intended treatment effect | $\beta$ approximated by binary search.              | Common practice of the replicators in their own simulation studies.|  
+| Given $\beta$s did not correspond to intended treatment effect | $\beta$ approximated by binary search.              | Common practice of the replicators in their own simulation studies.|
+| $beta$ not provided for mixed scenarios| | Consistency and own experience.|
+| Computation time to long| Number of calipers reduced. | Only effects resolution of results. Findings were not that fine grained.|
+
 
 \subsection{Some issue}
 `<More details on how the information provided was insufficient, unclear or vague>`
@@ -207,7 +231,9 @@ Wherever feasible multiple interpretations where implemented.
 \section{Discussion}
 
 \subsection{Replicability}
-`<Provide a general statement of how you experienced the replication process. Was it easy? What made it easy or difficult?>`
+`<Provide a general statement of how you experienced the replication process. 
+Was it easy? 
+What made it easy or difficult?>`
 
 \subsection{Replicator degrees of freedom}
 `<Here you can discuss the replicator degrees of freedom. What could the authors have done to make it more clear? Do you think the replicator degrees of freedom are so extensive that they could influence the results?>`
@@ -260,7 +286,7 @@ Rolf H. H. Groenwold :
 \subsection{Code organization}
 
 The code and the files associated are organized in the form of a research compendium
-which can be found in the following git repository `https://github.com/replisims/your_repo`
+which can be found in the following git repository `https://github.com/replisims/austin2011`
 
 
 ```{r code_structure, cache = FALSE}
