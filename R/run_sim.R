@@ -2,7 +2,7 @@
 #'
 #' @param scenario string indicating the name of the current parameter constellation
 #' @param sim_parameters list of simulation parameters (i.e. input for the \code{generate_data()} function)
-#' @param gamma_seq vector of gammas (i.e. calipher widths) for the propensity score matching.
+#' @param gamma_seq vector of gammas (i.e. caliper widths) for the propensity score matching.
 #' Defaults to the sequence from the manuscript.
 #' @param seed seed (defaults to 42)
 #'
@@ -34,9 +34,6 @@ run_sim <- function(scenario = "unnamed",
   # Generate data according to simulation parameters
   data <- rlang::exec(generate_data, !!!sim_parameters)
 
-  end_time <- Sys.time()
-  timediff <- end_time - start_time
-  print(timediff)
    sim_data <- data.frame(id = 1:nrow(data$sim_data),
                          data$sim_data)
 
@@ -44,16 +41,22 @@ run_sim <- function(scenario = "unnamed",
   logit_propensity <- get_propensity_logit(treatment_indicator = sim_data$treatment_indicator,
                                            predictors = sim_data[, 1:sim_parameters$n_covariates])
 
-  # Map over the sequence of gamma values (calipher widths)
+  # Map over the sequence of gamma values (caliper widths)
   purrr::map_dfr(gamma_seq, ~{
     matched_df <- get_matched_df(gamma = .x,
                                  treatment_indicator = sim_data$treatment_indicator,
                                  logit_propensity = logit_propensity,
                                  seed = seed)
 
+    # number of matched pairs
+    n_matched <- nrow(matched_df)/2
+
     # join the matched cases to the original data
     matched_data <- dplyr::right_join(sim_data, matched_df,
                                       by = c("id", "treatment_indicator"))
+
+    # obtain proportion treated
+    prop_treated <- mean(sim_data$treatment_indicator)
 
     # Performance measures for continuous outcomes
     if(sim_parameters$outcome_type == "continuous") {
@@ -92,6 +95,9 @@ run_sim <- function(scenario = "unnamed",
       # Logical value indicating whether the true effect is within the 95% CI
       coverage <- (ci_95_low < - sim_parameters$beta) & (sim_parameters$beta < ci_95_up)
 
+      end_time <- Sys.time()
+      diff_time <- end_time - start_time
+
       return(tibble::tibble(scenario = scenario,
                             outcome_type = "continuous",
                             seed = seed,
@@ -103,7 +109,13 @@ run_sim <- function(scenario = "unnamed",
                             reduction_bias = reduction_bias,
                             significance = significance,
                             coverage = coverage,
-                            squared_error = (- sim_parameters$beta - estimated_effect)^2
+                            squared_error = (- sim_parameters$beta - estimated_effect)^2,
+                            prop_treated = prop_treated,
+                            n_matched = n_matched,
+                            alpha_0_treat = data$alpha_0_treat,
+                            alpha_0_outcome = data$alpha_0_outcome,
+                            beta = data$beta,
+                            time = diff_time
       )
       )
     }
@@ -132,6 +144,9 @@ run_sim <- function(scenario = "unnamed",
 
       significance <- get_h_0(contingency_matrix)
 
+      end_time <- Sys.time()
+      diff_time <- end_time - start_time
+
       return(tibble::tibble(scenario = scenario,
                             outcome_type = "binary",
                             seed = seed,
@@ -143,9 +158,18 @@ run_sim <- function(scenario = "unnamed",
                             reduction_bias = reduction_bias,
                             significance = significance,
                             coverage = coverage,
-                            squared_error = (sim_parameters$risk_diff - diff_prop)^2
+                            squared_error = (sim_parameters$risk_diff - diff_prop)^2,
+                            prop_treated = prop_treated,
+                            n_matched = n_matched,
+                            alpha_0_treat = data$alpha_0_treat,
+                            alpha_0_outcome = data$alpha_0_outcome,
+                            beta = data$beta,
+                            contingency_matrix = list(contingency_matrix),
+                            time = diff_time
       )
       )
     }
   })
 }
+
+run_sim_quiet <- purrr::quietly(.f = run_sim)
