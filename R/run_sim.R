@@ -93,7 +93,7 @@ run_sim <- function(scenario = "unnamed",
                                        ps_bias = ps_bias)
 
       # Logical value indicating whether the true effect is within the 95% CI
-      coverage <- (ci_95_low < - sim_parameters$beta) & (sim_parameters$beta < ci_95_up)
+      coverage <- (ci_95_low < - sim_parameters$beta) & (- sim_parameters$beta < ci_95_up)
 
       end_time <- Sys.time()
       diff_time <- end_time - start_time
@@ -103,13 +103,15 @@ run_sim <- function(scenario = "unnamed",
                             seed = seed,
                             true_effect = - sim_parameters$beta,
                             estimated_effect = average_delta,
+                            ci_95_low = ci_95_low,
+                            ci_95_up = ci_95_up,
                             ps_bias = ps_bias,
                             crude_bias = crude_bias,
                             gamma = .x,
                             reduction_bias = reduction_bias,
                             significance = significance,
                             coverage = coverage,
-                            squared_error = (- sim_parameters$beta - estimated_effect)^2,
+                            squared_error = (- sim_parameters$beta - estimated_effect)^2, #check whether the minus needs to be here?
                             prop_treated = prop_treated,
                             n_matched = n_matched,
                             alpha_0_treat = data$alpha_0_treat,
@@ -128,8 +130,8 @@ run_sim <- function(scenario = "unnamed",
       var_diff_prop <- var_difference_proportions(matched_data = matched_data)
 
       # Logical value indicating whether the true effect is within the 95% CI
-      coverage <- (diff_prop - 1.96 * sqrt(var_diff_prop) < sim_parameters$risk_diff) &
-                  ((diff_prop + 1.96 * sqrt(var_diff_prop) > sim_parameters$risk_diff) )
+      coverage <- ((diff_prop - 1.96 * sqrt(var_diff_prop)) < sim_parameters$risk_diff) &
+                  ((diff_prop + 1.96 * sqrt(var_diff_prop)) > sim_parameters$risk_diff)
 
       crude_bias <- bias_crude(sim_data = sim_data,
                                true_treatment_effect = sim_parameters$risk_diff)
@@ -158,7 +160,7 @@ run_sim <- function(scenario = "unnamed",
                             reduction_bias = reduction_bias,
                             significance = significance,
                             coverage = coverage,
-                            squared_error = (sim_parameters$risk_diff - diff_prop)^2,
+                            squared_error = (sim_parameters$risk_diff - diff_prop)^2,  # check why no minus here
                             prop_treated = prop_treated,
                             n_matched = n_matched,
                             alpha_0_treat = data$alpha_0_treat,
