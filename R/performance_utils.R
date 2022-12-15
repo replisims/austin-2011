@@ -31,7 +31,7 @@ bias_crude <- function(sim_data, true_treatment_effect){
     dplyr::filter(treatment_indicator == 0) %>%
     dplyr::select(outcome) %>%
     dplyr::summarize(mean = mean(outcome))
-  (mean_treated[1, 1] - mean_untreated[1, 1]) - true_treatment_effect %>% unname()
+  (mean_untreated[1, 1] - mean_treated[1, 1]) - true_treatment_effect %>% unname()
 }
 
 
