@@ -84,16 +84,16 @@ run_sim <- function(scenario = "unnamed",
       ci_95_up <- t_test$conf.int[[2]]
 
       crude_bias <- bias_crude(sim_data = sim_data,
-                               true_treatment_effect = - sim_parameters$beta)
+                               true_treatment_effect = sim_parameters$beta)
 
       ps_bias <- bias_ps(estimated_effect = average_delta,
-                         true_treatment_effect = - sim_parameters$beta)
+                         true_treatment_effect = sim_parameters$beta)
 
       reduction_bias <- bias_reduction(crude_bias = crude_bias,
                                        ps_bias = ps_bias)
 
       # Logical value indicating whether the true effect is within the 95% CI
-      coverage <- (ci_95_low < - sim_parameters$beta) & (- sim_parameters$beta < ci_95_up)
+      coverage <- (ci_95_low < sim_parameters$beta) & (sim_parameters$beta < ci_95_up)
 
       end_time <- Sys.time()
       diff_time <- end_time - start_time
@@ -101,7 +101,7 @@ run_sim <- function(scenario = "unnamed",
       return(tibble::tibble(scenario = scenario,
                             outcome_type = "continuous",
                             seed = seed,
-                            true_effect = - sim_parameters$beta,
+                            true_effect = sim_parameters$beta,
                             estimated_effect = average_delta,
                             ci_95_low = ci_95_low,
                             ci_95_up = ci_95_up,
@@ -111,7 +111,7 @@ run_sim <- function(scenario = "unnamed",
                             reduction_bias = reduction_bias,
                             significance = significance,
                             coverage = coverage,
-                            squared_error = (- sim_parameters$beta - estimated_effect)^2, #check whether the minus needs to be here?
+                            squared_error = (sim_parameters$beta - estimated_effect)^2,
                             prop_treated = prop_treated,
                             n_matched = n_matched,
                             alpha_0_treat = data$alpha_0_treat,
