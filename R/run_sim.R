@@ -20,29 +20,35 @@
 #'
 #' @export
 
-run_sim <- function(scenario = "unnamed",
-                    sim_parameters,
-                    gamma_seq = seq(from = 0.05,
-                                    to = 2.5,
-                                    by = 0.05),
-                    seed = 42){
+run_sim <- function(
+    scenario,
+    sim_parameters,
+    gamma_seq,
+    seed
+){
 
   set.seed(seed = seed)
 
   start_time <- Sys.time()
 
   # Generate data according to simulation parameters
+  flog.info('Generating data. scenario=%s, seed=%d', scenario, seed)
   data <- rlang::exec(generate_data, !!!sim_parameters)
 
-   sim_data <- data.frame(id = 1:nrow(data$sim_data),
-                         data$sim_data)
+  flog.info('Time for generating data: %f sec', as.numeric(Sys.time() - start_time, units='secs'))
+
+  sim_data <- data.frame(
+    id = 1:nrow(data$sim_data),
+    data$sim_data)
 
   # Get propensity scores for each case
   logit_propensity <- get_propensity_logit(treatment_indicator = sim_data$treatment_indicator,
                                            predictors = sim_data[, 1:sim_parameters$n_covariates])
 
   # Map over the sequence of gamma values (caliper widths)
-  purrr::map_dfr(gamma_seq, ~{
+  result <- purrr::map_dfr(gamma_seq, ~{
+    flog.info('Matching with gamma: %f', .x)
+
     matched_df <- get_matched_df(gamma = .x,
                                  treatment_indicator = sim_data$treatment_indicator,
                                  logit_propensity = logit_propensity,
@@ -172,6 +178,10 @@ run_sim <- function(scenario = "unnamed",
       )
     }
   })
+
+  flog.info('Time for full repetition: %f sec', as.numeric(Sys.time() - start_time, units='secs'))
+
+  result
 }
 
 run_sim_quiet <- purrr::quietly(.f = run_sim)

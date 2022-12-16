@@ -316,3 +316,4 @@ binary_scenarios <- list(indep_norm_bin_0 = indep_norm_bin_0,
                          indep_bin_bin_01 = indep_bin_bin_01,
                          indep_bin_bin_015 = indep_bin_bin_015)
 
+scenarios <- c(continuous_scenarios, binary_scenarios)

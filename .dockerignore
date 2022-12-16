@@ -1,0 +1,25 @@
+.git
+
+# R object files
+*.rds
+
+# Session Data files
+*.RData
+
+# RStudio files
+.Rproj.user
+
+# RStudio server files
+/.rstudio
+
+# knitr and R markdown default cache directories
+/*_cache
+/cache
+
+.Ruserdata
+
+packrat/lib*
+packrat/src
+packrat/snapshot.lock
+
+infra/

@@ -1,0 +1,124 @@
+# Plan terraform and docker build:
+#   drone exec --trusted --branch staging --event pull_request --volume "$HOME/.aws:/root/.aws"
+
+# Plan and apply terraform and docker build:
+#   drone exec --trusted --branch staging --event push --volume "$HOME/.aws:/root/.aws"
+
+# Run Batch jobs:
+#   drone exec --trusted --branch staging --event deployment --volume "$HOME/.aws:/root/.aws"
+
+
+workspace:
+  base: /drone
+  path: src
+
+
+pipeline:
+
+  terraform_init:
+    image: hashicorp/terraform:1.2.0
+    commands:
+      - export PRODUCT=austin-2011
+      - export AWS_PROFILE=default
+      - cd infra
+      # - rm -rf .terraform
+          # -plugin-dir=/usr/lib/custom-terrafom-plugins \
+      - |
+        terraform init \
+          -input=false \
+          -backend-config="bucket=annloh-terraform-state" \
+          -backend-config="key=$PRODUCT-${DRONE_COMMIT_BRANCH}.tfstate" \
+          -var-file="${DRONE_COMMIT_BRANCH}.tfvars" \
+    when:
+      event:
+        - pull_request
+        - push
+
+
+  #####  Long-lived environments  #####
+  # staging    - default git branch, i.e. target for PRs, live beta environment
+  # production - live stable environment
+  terraform_plan:
+    image: hashicorp/terraform:1.2.0
+    commands:
+      - export AWS_PROFILE=default
+      - cd infra
+      - |
+        terraform plan \
+          -input=false \
+          -var-file="${DRONE_COMMIT_BRANCH}.tfvars" \
+          -out=.terraform/tfplan \
+    when:
+      event:
+        - pull_request
+        - push
+      branch:
+        - production
+        - staging
+
+  terraform_apply:
+    image: hashicorp/terraform:1.2.0
+    # volumes:
+    #   - ${HOME}/.aws:/root/.aws
+    commands:
+      - export AWS_PROFILE=default
+      - cd infra
+      - |
+        terraform apply \
+          -input=false \
+          .terraform/tfplan
+    when:
+      event: push
+      branch:
+        - production
+        - staging
+
+
+  build_docker_image:
+    image: docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker build -t austin-2011-app .
+    when:
+      event:
+        - pull_request
+        - push
+
+
+  ecr_authenticate:
+    image: meteogroup/awscli
+    commands:
+      - export AWS_PROFILE=default
+      - aws ecr get-login --no-include-email > .docker_login.tmp.sh
+    when:
+      event: push
+
+  deploy_docker_image:
+    image: docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - export PRODUCT=austin-2011
+      - source ./.docker_login.tmp.sh
+      - rm ./.docker_login.tmp.sh
+      - docker build -t 449601346066.dkr.ecr.eu-west-1.amazonaws.com/$PRODUCT-${DRONE_COMMIT_BRANCH} .
+      - docker push 449601346066.dkr.ecr.eu-west-1.amazonaws.com/$PRODUCT-${DRONE_COMMIT_BRANCH}
+    when:
+      event: push
+
+
+  run_app:
+    image: austin-2011-app
+    commands:
+      - export AWS_PROFILE=default
+      - export JOB_QUEUE="austin-2011-${DRONE_COMMIT_BRANCH}"
+      - export JOB_DEFINITION="austin-2011-${DRONE_COMMIT_BRANCH}-large"
+      - 'python main.py "{\"method\": \"create_jobs\"}"'
+    when:
+      event: deployment
+
+
+branches:
+  - production
+  - staging
