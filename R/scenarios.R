@@ -156,9 +156,9 @@ indep_bin_cont_2 <- c(indep_bin_cont,
 
 # Independent normal covariates (binary outcome) --------------------------
 
-indep_norm_bin<-c(fixed_parameters,
-                  fixed_param_bin,
-                  fixed_param_indep_normal)
+indep_norm_bin <- c(fixed_parameters,
+                    fixed_param_bin,
+                    fixed_param_indep_normal)
 
 indep_norm_bin_0 <- c(indep_norm_bin,
                       risk_diff = 0)
