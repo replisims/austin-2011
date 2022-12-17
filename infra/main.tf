@@ -118,7 +118,7 @@ module "batch" {
     },
     {
       name  = "RESULTS_DIR",
-      value = "batch/v2",
+      value = "batch/v3",
     },
   ]
 
