@@ -121,6 +121,27 @@ get_contingency_matrix <- function(matched_data){
                                 "Untreated" = c("Event", "Non-event")))
 }
 
+#' Obtain contingency matrix from matched data
+#'
+#' @param unmatched_data
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_contingency_matrix_unmatched <- function(unmatched_data){
+
+  a <- sum(unmatched_data$treatment_indicator == 1 & unmatched_data$outcome == 1)
+  b <- sum(unmatched_data$treatment_indicator == 1 & unmatched_data$outcome == 0)
+  c <- sum(unmatched_data$treatment_indicator == 0 & unmatched_data$outcome == 1)
+  d <- sum(unmatched_data$treatment_indicator == 0 & unmatched_data$outcome == 0)
+
+    data <- matrix(c(a, c, b, d),
+                   nrow = 2,
+                   dimnames = list("Status" = c("Treated", "Untreated"),
+                                   "Outcome" = c("Event", "Non-event")))
+}
+
 #' Test Null hypothesis of equal proportions
 #'
 #' @param contingency_matrix

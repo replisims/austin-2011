@@ -135,6 +135,8 @@ run_sim <- function(scenario = "unnamed",
 
       crude_bias <- bias_crude(sim_data = sim_data,
                                true_treatment_effect = sim_parameters$risk_diff)
+      contingency_matrix_unmatched <- get_contingency_matrix_unmatched(sim_data)
+
 
       ps_bias <- bias_ps(estimated_effect = diff_prop,
                          true_treatment_effect = sim_parameters$risk_diff)
@@ -167,6 +169,7 @@ run_sim <- function(scenario = "unnamed",
                             alpha_0_outcome = data$alpha_0_outcome,
                             beta = data$beta,
                             contingency_matrix = list(contingency_matrix),
+                            contingency_matrix_unmatched = list(contingency_matrix_unmatched),
                             time = diff_time
       )
       )
