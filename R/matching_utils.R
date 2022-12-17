@@ -107,7 +107,7 @@ compute_distance <- function(candidate_id, matching_data){
     dplyr::transmute(distance = abs(candidate_logit_ps - logit_propensity))
 }
 
-#' Get the case with the smalles distance to the candidate case
+#' Get the case with the smallest distance to the candidate case
 #'
 #' @param candidate_id
 #' @param matching_data
