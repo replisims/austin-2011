@@ -99,6 +99,12 @@ The author refers to all but the independent normal covariates scenario as a "se
 | Covariate type| 10 standard normal| 10 standard normal| 5 standard normal, 5 Bernoulli random variable with parameter 0.5| 9 Bernoulli random variable with parameter 0.5, 1 standard normal| 10 Bernoulli random variable with parameter 0.5|
 
 
+|Scenario| Correlation between covariates| Covariate type| 
+|Independent normal|
+|Correlated normal|
+|Mixed 1|
+|Mixed 2| 
+|Independent binary|
 
 \subsubsection{Outcome type}
 Data comprising two different outcome types "binary" and "continuous" were generated.
@@ -182,6 +188,15 @@ Due to ... we deviated from this ... and reduced the number of of different cali
 The study investigated "the impact of caliper width on reduction in bias, mean squared error (MSE), coverage of confidence intervals, and type 1 error rates." (p.151) 
 
 `<Describe which performance measures are compared, if applicable mention specialized R packages, their versions, as well as parameter settings of functions.>`
+\subsubsection{Within - matched pair diffence}
+Austin writes "Within the propensity-score matched sample, let $Y_{T,i}$ and $Y_{C,i} denote the outcome for the treated and untreated subjects in the ith matched set, respectively. Then let $d_i = Y_{C,i} - Y_{T,i} denoted the within-matched pair difference in outcome between  treated and untreated subject."
+We found this definition to by highly unconventional.
+Furthermore, this definition led to some inconsistencies.
+It would follow that the true treatment effect is not identical to $beta$ but rather has an opposite sign which makes code implementation slightly confusing.
+In addition, in all figures Austin reports the "True delta" as as positive thus identical to $beta$.
+For reasons of convention as well as consistency and ease of implementation we thus assumed that the above definition contained a typo.
+We hence assumed the effect i.e. difference in mean to refer to subtracting the outcome of the the untreated from that of the treated. 
+
 
 The following flowchart describes the simulation design
 ```{r, out.width='450pt', fig.cap= "Flow chart of data generating mechanism"}
@@ -220,7 +235,20 @@ Wherever feasible multiple interpretations where implemented.
 \subsection{Simulation descriptives}
 `<Describe the sampling distribution if any of the simulation parameters were sampled>`
 \subsection{Replication of result figures}
-\subsubsection{Outcome 1}
+\subsubsection{Reduction in bias - Figure 1}
+
+\subsubsection{Mean squared error - Figure 2}
+
+\subsubsection{Coverage of 95% CIs - Figure 3}
+
+\subsubsection{Empirical type I error rate - Figure 4}
+
+\subsubsection{Reduction in bias - Figure 5}
+
+\subsubsection{Mean squared error - Figure 6}
+
+\subsubsection{Coverage of 95% CIs - Figure 7}
+
 `<Provide the information that were presented in figure form in the original>`
 \subsection{Replication of result tables}
 `<Compare any tabulated data to the original>`
@@ -236,7 +264,14 @@ Was it easy?
 What made it easy or difficult?>`
 
 \subsection{Replicator degrees of freedom}
+Replication was rather straight forward. 
+We attribute this to the rather simple simulation design as well the replicators' experience with the ...
+However, there were some details which were undefined or counter to our experience 
+The values of $\alpha_{0,treat}$ and $\alpha_{0,outcome}$ were not only not provided for any scenario but the "independent normal scenario" their adaptation was also discussed in a rather odd place i.e. the end of the section 3.1.2. detailing the data generation of the continuous outcomes even though these parameters pertained to the data generation for binary outcomes discussed in section 3.1.1.
+
 `<Here you can discuss the replicator degrees of freedom. What could the authors have done to make it more clear? Do you think the replicator degrees of freedom are so extensive that they could influence the results?>`
+
+
 
 \subsection{Equivalence of results}
 `<How would you judge the overall equivalence of results? Are the orders of magnitude comparable? Are trends in the same direction? Would you draw the same conclusions as the authors based on your replication? Were some results not comparable because of insufficient figure resolution or labeling? Did the authors ommit some results which consequently cannot be compared?>`

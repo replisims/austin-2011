@@ -63,15 +63,18 @@ generate_data <- function(sample_size,
                             continuous = 0)
 
   beta <- switch(outcome_type,
-                 binary = get_beta(n_iter,
+                 binary = get_beta2(n_iter,
                                    sample_size,
                                    n_covariates,
                                    n_normal,
                                    cov_mat = cov_mat,
                                    alpha,
                                    alpha_0_outcome,
+                                   alpha_0_treat,
                                    risk_diff),
                  continuous = beta)
+
+  print(beta)
 
   covariate_data <- sample_covariates(sample_size = sample_size,
                                       n_covariates = n_covariates,

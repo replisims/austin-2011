@@ -268,6 +268,72 @@ get_beta <- function(n_iter,
   }) %>% mean()
 }
 
+
+# Function for estimating beta --------------------------------------------
+
+#' Estimate coefficient for treatment dummy
+#'
+#' @param n_iter number of iterations
+#' @param sample_size sample size
+#' @param n_covariates number of covariates
+#' @param n_normal integer specifying the number of normal covariates (must be <= n_convariates)
+#' @param cov_mat covariance matrix
+#' @param alpha coefficient vector (without intercept)
+#' @param alpha_0_outcome intercept for outcome model
+#' @param risk_diff intended risk difference
+#'
+#' @return estimate for beta (coefficient for treatment dummy)
+#' @importFrom magrittr "%>%"
+#'
+get_beta2 <- function(n_iter,
+                      sample_size,
+                      n_covariates,
+                      n_normal,
+                      cov_mat,
+                      alpha,
+                      alpha_0_outcome,
+                      alpha_0_treat,
+                      risk_diff){
+  1:n_iter %>% purrr::map_dbl(~{
+
+    covariate_data <- sample_covariates(sample_size = sample_size,
+                                        n_covariates = n_covariates,
+                                        n_normal = n_normal,
+                                        cov_mat = cov_mat)
+
+    lin_pred_treat <- get_linear_predictor(alpha = c(alpha_0_treat, alpha),
+                                           covariate_data = cbind(rep(1, sample_size),
+                                                                  covariate_data))
+
+
+
+
+    treatment_prob <- 1/(1 + exp(-(lin_pred_treat)))
+
+    treatment_indicator <- sample_bernoulli(treatment_prob)
+
+    treatment_data <- covariate_data[which(treatment_indicator == 1),]
+
+    lin_pred_outcome <- get_linear_predictor(alpha = c(alpha_0_outcome, alpha),
+                                             covariate_data = cbind(rep(1, nrow(treatment_data)), treatment_data))
+
+    marg_prob_untreated <- 1/(1 + exp(-(lin_pred_outcome))) # p_bar_0
+
+    beta <- binary_search(fun = estimate_marginal_risk_diff,
+                          target_value = risk_diff,
+                          lower = -2 * sum(alpha),
+                          upper = sum(alpha),
+                          linear_predictor = lin_pred_outcome,
+                          marg_prob_untreated = marg_prob_untreated)
+  }) %>% mean()
+}
+
+
+
+
+
+
+
 #' Simulate random error for continuous outcome
 #'
 #' @param sigma_squared Error variance
