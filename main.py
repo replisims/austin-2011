@@ -16,7 +16,7 @@ def create_jobs():
 
     start_time = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
 
-    first_scenario_id = 30
+    first_scenario_id = 5
     number_of_scenarios = 1
     for scenario_id in range(first_scenario_id, first_scenario_id + number_of_scenarios):
         job_parameters = OrderedDict([
