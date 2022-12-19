@@ -56,7 +56,7 @@ get_matched_df <- function(gamma, treatment_indicator, logit_propensity, seed){
 
   match_id <- compute_id_min_dist(candidate_id, matching_data)
 
-  # Check whether minimal distance lower than calipher ----------------------
+  # Check whether minimal distance lower than caliper ----------------------
 
   if(min(distance$distance) < calipher){
 
