@@ -31,8 +31,8 @@ for (filename in sort(list.files(results_dir))) {
     flog.info('Loading %s', filepath)
     results <- c(results, list(readRDS(filepath)))
     # results <- append(results, readRDS(filepath))
+    last_prefix <- prefix
   }
-  last_prefix <- prefix
 }
 # for (error in errors)
 # for (warn in warns)
