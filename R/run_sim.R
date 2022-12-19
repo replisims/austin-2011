@@ -129,9 +129,12 @@ run_sim <- function(scenario = "unnamed",
 
       var_diff_prop <- var_difference_proportions(matched_data = matched_data)
 
+      ci_95_low <- diff_prop - 1.96 * sqrt(var_diff_prop)
+
+      ci_95_up <- diff_prop + 1.96 * sqrt(var_diff_prop)
+
       # Logical value indicating whether the true effect is within the 95% CI
-      coverage <- ((diff_prop - 1.96 * sqrt(var_diff_prop)) < sim_parameters$risk_diff) &
-                  ((diff_prop + 1.96 * sqrt(var_diff_prop)) > sim_parameters$risk_diff)
+      coverage <- (ci_95_low < sim_parameters$risk_diff) & (ci_95_up > sim_parameters$risk_diff)
 
       crude_bias <- bias_crude(sim_data = sim_data,
                                true_treatment_effect = sim_parameters$risk_diff)
@@ -156,6 +159,8 @@ run_sim <- function(scenario = "unnamed",
                             seed = seed,
                             true_effect = sim_parameters$risk_diff,
                             estimated_effect = diff_prop,
+                            ci_95_low = ci_95_low,
+                            ci_95_up = ci_95_up,
                             ps_bias = ps_bias,
                             crude_bias = crude_bias,
                             gamma = .x,
