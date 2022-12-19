@@ -14,5 +14,5 @@ docker run --rm -it \
   -e CACHE_DIR="/tmp/cache" \
   -e RESULTS_BUCKET="annloh-$PROJECT-staging-cache" \
   -e RESULTS_DIR="batch/v5" \
-  -e START_TIMES="20221219_114216 20221219_114216" \
+  -e START_TIMES="20221219_113225 20221219_114216" \
   $IMAGE cloud/wrap_collect_results.sh
