@@ -68,8 +68,6 @@ generate_data <- function(sample_size = 10000,
                                    risk_diff),
                  continuous = beta)
 
-  print(beta)
-
   covariate_data <- sample_covariates(sample_size = sample_size,
                                       n_covariates = n_covariates,
                                       n_normal = n_normal,
