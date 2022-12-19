@@ -21,7 +21,6 @@ fixed_param_bin <- list(alpha = c(rep(log(1.1), 3),
                         beta = NULL,
                         sigma_squared = NULL,
                         outcome_type = "binary",
-                        n_iter = 1000,
                         margin_prev = 0.29)
 
 fixed_param_indep_normal <- list(n_normal = 10,
