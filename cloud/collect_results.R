@@ -20,19 +20,18 @@ errors <- list()
 for (filename in sort(list.files(results_dir))) {
   filepath <- sprintf('%s/%s', results_dir, filename)
   prefix <- sub('(scenario_\\d+-repetition_\\d+).*', '\\1', filename)
-  # if (prefix == last_prefix) {
-  #   flog.warn('Ignored because of duplicate prefix: %s', filepath)
-  #   # errors %<>% c(filepath)
-  # } else
-  # if (! any(map_lgl(start_times, ~ grepl(., filename, fixed = TRUE)))) {
-  #   flog.warn('Ignored because of unmatched start_time: %s', filepath)
-  #   # warns %<>% c(filepath)
-  # }
-  # else {
-  flog.info('Loading %s', filepath)
-  results <- c(results, list(readRDS(filepath)))
+  if (prefix == last_prefix) {
+    flog.warn('Ignored because of duplicate prefix: %s', filepath)
+    # errors %<>% c(filepath)
+  } else if (! any(map_lgl(start_times, ~ grepl(., filename, fixed = TRUE)))) {
+    flog.warn('Ignored because of unmatched start_time: %s', filepath)
+    # warns %<>% c(filepath)
+  }
+  else {
+    flog.info('Loading %s', filepath)
+    results <- c(results, list(readRDS(filepath)))
     # results <- append(results, readRDS(filepath))
-  # }
+  }
   last_prefix <- prefix
 }
 # for (error in errors)
