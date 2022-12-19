@@ -39,7 +39,7 @@ run_sim <- function(scenario = "unnamed",
 
   # Get propensity scores for each case
   logit_propensity <- get_propensity_logit(treatment_indicator = sim_data$treatment_indicator,
-                                           predictors = sim_data[, 1:sim_parameters$n_covariates])
+                                           predictors = sim_data[, 2:sim_parameters$n_covariates + 1])
 
   # Map over the sequence of gamma values (caliper widths)
   purrr::map_dfr(gamma_seq, ~{
