@@ -52,7 +52,7 @@ run_sim <- function(scenario = "unnamed",
     n_matched <- nrow(matched_df)/2
 
     # join the matched cases to the original data
-    matched_data <- dplyr::right_join(sim_data, matched_df,
+    matched_data <- dplyr::left_join(matched_df, sim_data,
                                       by = c("id", "treatment_indicator"))
 
     # obtain proportion treated
