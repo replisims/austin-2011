@@ -56,13 +56,14 @@ get_matched_df <- function(gamma, treatment_indicator, logit_propensity, seed){
 
   match_id <- compute_id_min_dist(candidate_id, matching_data)
 
-  # Check whether minimal distance lower than calipher ----------------------
+  # Check whether minimal distance lower than caliper ----------------------
 
   if(min(distance$distance) < calipher){
 
     #add matched pair to matched data and remove from data
 
-    matched_data <- as.data.frame(dplyr::bind_rows(matched_data, matching_data %>% dplyr::filter(id %in% c(candidate_id, match_id))))
+    matched_data <- as.data.frame(dplyr::bind_rows(matched_data, matching_data %>% dplyr::filter(id == candidate_id)) %>%
+                                    dplyr::bind_rows(matching_data %>% dplyr::filter(id == match_id$id)))
 
     matching_data <- matching_data %>% dplyr::filter(!id %in% c(candidate_id, match_id$id))
   }else{

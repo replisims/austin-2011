@@ -78,8 +78,8 @@ difference_proportions <- function(matched_data){
 
   # c = pairs in which the untreated subject experienced the event while the treated subject does not
 
-  b <- sum(matched_data$outcome[even_index] == 1 & matched_data$outcome[even_index - 1] == 0)
-  c <- sum(matched_data$outcome[even_index] == 0 & matched_data$outcome[even_index - 1] == 1)
+  b <- sum(matched_data$outcome[even_index - 1] == 1 & matched_data$outcome[even_index] == 0)
+  c <- sum(matched_data$outcome[even_index] == 1 & matched_data$outcome[even_index - 1] == 0)
   (b-c)/n_pairs
 }
 
@@ -95,8 +95,8 @@ difference_proportions <- function(matched_data){
 var_difference_proportions <- function(matched_data){
   even_index <- seq(from = 2, to = nrow(matched_data), by = 2)
   n <- nrow(matched_data)/2
-  b <- sum(matched_data$outcome[even_index] == 1 & matched_data$outcome[even_index - 1] == 0)
-  c <- sum(matched_data$outcome[even_index] == 0 & matched_data$outcome[even_index - 1] == 1)
+  b <- sum(matched_data$outcome[even_index - 1] == 1 & matched_data$outcome[even_index] == 0)
+  c <- sum(matched_data$outcome[even_index] == 1 & matched_data$outcome[even_index - 1] == 0)
   ((b + c) - (c - b)^2 / n) / n^2
 
 }
@@ -112,8 +112,8 @@ var_difference_proportions <- function(matched_data){
 get_contingency_matrix <- function(matched_data){
   even_index <- seq(from = 2, to = nrow(matched_data), by = 2)
   a <- sum(matched_data$outcome[even_index] == 1 & matched_data$outcome[even_index - 1] == 1)
-  b <- sum(matched_data$outcome[even_index] == 1 & matched_data$outcome[even_index - 1] == 0)
-  c <- sum(matched_data$outcome[even_index] == 0 & matched_data$outcome[even_index - 1] == 1)
+  b <- sum(matched_data$outcome[even_index - 1] == 1 & matched_data$outcome[even_index] == 0)
+  c <- sum(matched_data$outcome[even_index] == 1 & matched_data$outcome[even_index - 1] == 0)
   d <- sum(matched_data$outcome[even_index] == 0 & matched_data$outcome[even_index - 1] == 0)
   data <- matrix(c(a, c, b, d),
                  nrow = 2,

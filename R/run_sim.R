@@ -43,7 +43,7 @@ run_sim <- function(
 
   # Get propensity scores for each case
   logit_propensity <- get_propensity_logit(treatment_indicator = sim_data$treatment_indicator,
-                                           predictors = sim_data[, 1:sim_parameters$n_covariates])
+                                           predictors = sim_data[, 2:sim_parameters$n_covariates + 1])
 
   # Map over the sequence of gamma values (caliper widths)
   result <- purrr::map_dfr(gamma_seq, ~{
@@ -58,7 +58,7 @@ run_sim <- function(
     n_matched <- nrow(matched_df)/2
 
     # join the matched cases to the original data
-    matched_data <- dplyr::right_join(sim_data, matched_df,
+    matched_data <- dplyr::left_join(matched_df, sim_data,
                                       by = c("id", "treatment_indicator"))
 
     # obtain proportion treated
@@ -135,9 +135,12 @@ run_sim <- function(
 
       var_diff_prop <- var_difference_proportions(matched_data = matched_data)
 
+      ci_95_low <- diff_prop - 1.96 * sqrt(var_diff_prop)
+
+      ci_95_up <- diff_prop + 1.96 * sqrt(var_diff_prop)
+
       # Logical value indicating whether the true effect is within the 95% CI
-      coverage <- ((diff_prop - 1.96 * sqrt(var_diff_prop)) < sim_parameters$risk_diff) &
-                  ((diff_prop + 1.96 * sqrt(var_diff_prop)) > sim_parameters$risk_diff)
+      coverage <- (ci_95_low < sim_parameters$risk_diff) & (ci_95_up > sim_parameters$risk_diff)
 
       crude_bias <- bias_crude(sim_data = sim_data,
                                true_treatment_effect = sim_parameters$risk_diff)
@@ -162,13 +165,15 @@ run_sim <- function(
                             seed = seed,
                             true_effect = sim_parameters$risk_diff,
                             estimated_effect = diff_prop,
+                            ci_95_low = ci_95_low,
+                            ci_95_up = ci_95_up,
                             ps_bias = ps_bias,
                             crude_bias = crude_bias,
                             gamma = .x,
                             reduction_bias = reduction_bias,
                             significance = significance,
                             coverage = coverage,
-                            squared_error = (sim_parameters$risk_diff - diff_prop)^2,  # check why no minus here
+                            squared_error = (sim_parameters$risk_diff - diff_prop)^2,
                             prop_treated = prop_treated,
                             n_matched = n_matched,
                             alpha_0_treat = data$alpha_0_treat,
