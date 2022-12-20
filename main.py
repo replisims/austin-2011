@@ -16,9 +16,10 @@ RESULTS_DIR = 'batch/v6'
 
 
 def scenarios():
-    first_scenario_id = 30
-    number_of_scenarios = 1
-    range(first_scenario_id, first_scenario_id + number_of_scenarios)
+    # first_scenario_id = 30
+    # number_of_scenarios = 1
+    # range(first_scenario_id, first_scenario_id + number_of_scenarios)
+    list(range(26, 30+1)) + [35, 40, 45, 50]
 
 
 def create_jobs():
