@@ -34,6 +34,8 @@ generate_data <- function(sample_size = 10000,
                           risk_diff = NULL,
                           margin_prev = NULL){
 
+  epsilon <- NA_real_
+
   if(n_normal>0){
     cov_mat <- get_cov_matrix(n_normal = n_normal,
                               pair_cor = pair_cor)}
@@ -90,15 +92,20 @@ generate_data <- function(sample_size = 10000,
 
   outcome_prob <- 1/(1 + exp(-(lin_pred_outcome + beta*treatment_indicator)))
 
+  if(outcome_type == "continuous"){
+    epsilon <- get_epsilon(sigma_squared = sigma_squared,
+                           sample_size = sample_size)
+  }
+
   outcome <- switch(outcome_type,
                     binary = sample_bernoulli(outcome_prob),
-                    continuous = lin_pred_outcome + beta * treatment_indicator + get_epsilon(sigma_squared = sigma_squared,
-                                                                                             sample_size = sample_size))
+                    continuous = lin_pred_outcome + beta * treatment_indicator + epsilon)
 
 
   list(sim_data = tibble::tibble(covariate_data,
                                  treatment_prob = treatment_prob,
                                  treatment_indicator = treatment_indicator,
+                                 epsilon = epsilon,
                                  outcome = outcome),
        alpha_0_treat = alpha_0_treat,
        alpha_0_outcome = alpha_0_outcome,
