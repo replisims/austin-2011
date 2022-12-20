@@ -116,10 +116,6 @@ module "batch" {
       name  = "RESULTS_BUCKET",
       value = "${module.s3_bucket_cache.id}",
     },
-    {
-      name  = "RESULTS_DIR",
-      value = "batch/v6",
-    },
   ]
 
   subnets        = module.vpc.public_subnets

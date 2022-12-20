@@ -11,20 +11,28 @@ import boto3
 log = logging.getLogger(__name__)
 
 
+N_REPETITIONS = 100
+RESULTS_DIR = 'batch/v6'
+
+
+def scenarios():
+    first_scenario_id = 30
+    number_of_scenarios = 1
+    range(first_scenario_id, first_scenario_id + number_of_scenarios)
+
+
 def create_jobs():
     batch_client = boto3.client('batch')
 
     start_time = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
 
-    first_scenario_id = 30
-    number_of_scenarios = 1
-    for scenario_id in range(first_scenario_id, first_scenario_id + number_of_scenarios):
+    for scenario_id in scenarios():
         job_parameters = OrderedDict([
             ('SCENARIO_ID', scenario_id),
             ('FIRST_REPETITION_ID', 1),
             ('START_TIME', start_time),
+            ('RESULTS_DIR', RESULTS_DIR),
         ])
-        number_of_repetitions = 100
 
         job_params = {
             'jobQueue': os.environ['JOB_QUEUE'],
@@ -43,9 +51,9 @@ def create_jobs():
                 ],
             },
         }
-        if number_of_repetitions > 1:
+        if N_REPETITIONS > 1:
             job_params['arrayProperties'] = {
-                'size': number_of_repetitions,
+                'size': N_REPETITIONS,
             }
 
         log.info('job_params={}'.format(job_params))
