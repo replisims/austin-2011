@@ -3,6 +3,7 @@ from datetime import datetime
 import json
 import logging
 import os
+import re
 import sys
 
 import boto3
@@ -39,14 +40,14 @@ def create_jobs():
             'jobQueue': os.environ['JOB_QUEUE'],
             'jobDefinition': os.environ['JOB_DEFINITION'],
             'jobName': '-'.join(
-                '{}_{}'.format(k, v)
+                '{}_{}'.format(k, re.sub(r'[^a-zA-Z0-9_]', '_', str(v)))
                 for k, v in job_parameters.items()
             ),
             'containerOverrides': {
                 'environment': [
                     {
                         'name': k,
-                        'value': str(v)
+                        'value': str(v),
                     }
                     for k, v in job_parameters.items()
                 ],
