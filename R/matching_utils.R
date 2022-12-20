@@ -35,7 +35,7 @@ get_propensity_logit <- function(...){
   compute_logit(get_propensity(...))
 }
 
-#' Copute variance of logit propensity score
+#' Compute variance of logit propensity score
 #'
 #' @param group
 #' @param logit_propensity
@@ -48,7 +48,7 @@ get_var_logit_prop_score <- function(group, logit_propensity, treatment_indicato
   var(logit_propensity[which(treatment_indicator == group)])
 }
 
-#' Compute the calipher width
+#' Compute the caliper width
 #'
 #' @param gamma
 #' @param var_treated
