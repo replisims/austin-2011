@@ -63,9 +63,9 @@ get_matched_df <- function(gamma, treatment_indicator, logit_propensity, seed){
     #add matched pair to matched data and remove from data
 
     matched_data <- as.data.frame(dplyr::bind_rows(matched_data, matching_data %>% dplyr::filter(id == candidate_id)) %>%
-                                    dplyr::bind_rows(matching_data %>% dplyr::filter(id == match_id$id)))
+                                    dplyr::bind_rows(matching_data %>% dplyr::filter(id == match_id)))
 
-    matching_data <- matching_data %>% dplyr::filter(!id %in% c(candidate_id, match_id$id))
+    matching_data <- matching_data %>% dplyr::filter(!id %in% c(candidate_id, match_id))
   }else{
 
     #kick out candidate

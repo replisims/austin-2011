@@ -120,8 +120,14 @@ compute_id_min_dist <- function(candidate_id, matching_data){
   control_data <- matching_data %>%
     dplyr::filter(treatment_indicator == 0)
   matching_data <- dplyr::bind_cols(control_data, distance)
-  matching_data %>%
+  min_dist <- matching_data %>%
     dplyr::filter(distance == min(matching_data$distance)) %>%
-    dplyr::select(id)
+    dplyr::pull(id)
+
+  if(length(min_dist > 1)){
+    min_dist <- sample(x = min_dist, size = 1)
+  }
+
+  return(min_dist)
 }
 
