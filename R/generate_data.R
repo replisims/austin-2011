@@ -15,7 +15,7 @@
 #'
 #' @return a list with the following content
 #' \itemize{
-#' \item \code{sim_data} dataframe with simulated data}
+#' \item \code{sim_data} data frame with simulated data}
 #' \item \code{alpha_0_treat} numerical value indicating intercept of treatment model
 #' \item \code{alpha_0_outcome} numerical value indicating intercept of outcome model
 #' \item \code{beta} numerical value indicating regression coefficient of treatment dummy}
@@ -26,13 +26,13 @@ generate_data <- function(sample_size,
                           n_normal = NULL,
                           pair_cor,
                           alpha,
-                          beta,
-                          sigma_squared,
+                          beta = NULL,
+                          sigma_squared = NULL,
                           outcome_type,
                           n_iter,
                           prop_treated,
-                          risk_diff,
-                          margin_prev){
+                          risk_diff = NULL,
+                          margin_prev = NULL){
 
   flog.info('Sample size: %d', sample_size)
 
@@ -40,7 +40,9 @@ generate_data <- function(sample_size,
     n_normal <- n_covariates
   }
 
-  if(n_normal>0){
+  epsilon <- NA_real_
+
+  if(n_normal > 0){
     cov_mat <- get_cov_matrix(n_normal = n_normal,
                               pair_cor = pair_cor)}
 
@@ -96,15 +98,20 @@ generate_data <- function(sample_size,
 
   outcome_prob <- 1/(1 + exp(-(lin_pred_outcome + beta*treatment_indicator)))
 
+  if(outcome_type == "continuous"){
+    epsilon <- get_epsilon(sigma_squared = sigma_squared,
+                           sample_size = sample_size)
+  }
+
   outcome <- switch(outcome_type,
                     binary = sample_bernoulli(outcome_prob),
-                    continuous = lin_pred_outcome + beta * treatment_indicator + get_epsilon(sigma_squared = sigma_squared,
-                                                                                             sample_size = sample_size))
+                    continuous = lin_pred_outcome + beta * treatment_indicator + epsilon)
 
 
   list(sim_data = tibble::tibble(covariate_data,
                                  treatment_prob = treatment_prob,
                                  treatment_indicator = treatment_indicator,
+                                 epsilon = epsilon,
                                  outcome = outcome),
        alpha_0_treat = alpha_0_treat,
        alpha_0_outcome = alpha_0_outcome,

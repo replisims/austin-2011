@@ -7,9 +7,9 @@
 
 # Matching Utils ----------------------------------------------------------
 
-#' Create a dateframe with matched data
+#' Create a data frame with matched data
 #'
-#' @param gamma calipher width
+#' @param gamma caliper width
 #' @param treatment_indicator vector indicating treatment or control per case
 #' @param logit_propensity vector with logit of propensity score per case
 #' @param seed
@@ -26,13 +26,13 @@ get_matched_df <- function(gamma, treatment_indicator, logit_propensity, seed){
 
   matched_data <- NULL
 
-  calipher <- get_calipher_width(gamma = gamma,
-                                 var_treated = get_var_logit_prop_score(group = 1,
+  caliper <- get_caliper_width(gamma = gamma,
+                               var_treated = get_var_logit_prop_score(group = 1,
+                                                                      logit_propensity = logit_propensity,
+                                                                      treatment_indicator = treatment_indicator),
+                               var_untreated = get_var_logit_prop_score(group = 0,
                                                                         logit_propensity = logit_propensity,
-                                                                        treatment_indicator = treatment_indicator),
-                                 var_untreated = get_var_logit_prop_score(group = 0,
-                                                                          logit_propensity = logit_propensity,
-                                                                          treatment_indicator = treatment_indicator))
+                                                                        treatment_indicator = treatment_indicator))
 
 
   #while there are still participants in the control group as well as in the treatment group
@@ -49,23 +49,33 @@ get_matched_df <- function(gamma, treatment_indicator, logit_propensity, seed){
 
   # Get distance to candidate_value -----------------------------------------
 
-  distance <- compute_distance(candidate_id = candidate_id, matching_data = matching_data)
+  distance_dat <- matching_data %>%
+      dplyr::filter(treatment_indicator == 0) %>%
+      dplyr::mutate(candidate_logit_ps = get_case_logit_propensity(case_id = candidate_id,
+                                                                   matching_data = matching_data),
+                    distance = abs(candidate_logit_ps - logit_propensity))
 
+  min_dist <- min(distance_dat$distance)
 
   # Get index of minimal distance -------------------------------------------
 
-  match_id <- compute_id_min_dist(candidate_id, matching_data)
+  match_id <- distance_dat %>% dplyr::filter(distance == min_dist) %>% dplyr::pull(id)
+
+  if(length(match_id) > 1){
+    match_id <- sample(x = match_id, size = 1)
+  }
+
 
   # Check whether minimal distance lower than caliper ----------------------
 
-  if(min(distance$distance) < calipher){
+  if(min_dist < caliper){
 
     #add matched pair to matched data and remove from data
 
-    matched_data <- as.data.frame(dplyr::bind_rows(matched_data, matching_data %>% dplyr::filter(id == candidate_id)) %>%
-                                    dplyr::bind_rows(matching_data %>% dplyr::filter(id == match_id$id)))
+    matched_data <- as.data.frame(dplyr::bind_rows(matched_data, matching_data %>% dplyr::filter(id == candidate_id))) %>%
+                                    dplyr::bind_rows(matching_data %>% dplyr::filter(id == match_id))
 
-    matching_data <- matching_data %>% dplyr::filter(!id %in% c(candidate_id, match_id$id))
+    matching_data <- matching_data %>% dplyr::filter(!id %in% c(candidate_id, match_id))
   }else{
 
     #kick out candidate

@@ -239,7 +239,7 @@ mix_2_bin_01 <- c(mix_2_bin,
 mix_2_bin_015 <- c(mix_2_bin,
                    risk_diff = -0.15)
 
-# Independant binary covariates (binary outcome) ----------------------
+# Independent binary covariates (binary outcome) ----------------------
 
 indep_bin_bin <- c(fixed_parameters,
                    fixed_param_bin,

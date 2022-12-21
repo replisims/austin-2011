@@ -91,21 +91,12 @@ test_anna$marginal_prob_treated # should be 0.29 - 0.02
 test_anna$marginal_prob_untreated #should be 0.29
 
 
+alpha_cont <- c(1.1, 1.1, 1.1, 1.25, 1.25, 1.25, 1.5, 1.5, 1.5, 2)
 # Continuous data ---------------------------------------------------------
 
 
 
-parameters_anna2 <- generate_data(sample_size = 10000,
-                                 n_covariates = 10,
-                                 n_normal = 10,
-                                 alpha = alpha_dich,
-                                 pair_cor = 0,
-                                 prop_treated = 0.25,
-                                 risk_diff =  -0.02,
-                                 n_iter = 1000,
-                                 outcome_type = "continuous",
-                                 margin_prev = 0.29,
-                                 sigma_squared = 127.6056)
+
 
 mean(parameters_anna$sim_data$treatment_prob)
 mean(parameters_anna$sim_data$treatment_indicator)
@@ -161,3 +152,70 @@ devtools::load_all()
 
 
 run_sim(scenario = "indep_")
+
+
+
+# Check continous data ----------------------------------------------------
+
+parameters_anna2 <- generate_data(sample_size = 10000,
+                                  n_covariates = 10,
+                                  n_normal = 10,
+                                  alpha = alpha_cont,
+                                  pair_cor = 0,
+                                  prop_treated = 0.25,
+                                  beta =  2,
+                                  n_iter = 1000,
+                                  outcome_type = "continuous",
+                                  sigma_squared = 127.6056)
+
+
+sim_data_treated <- parameters_anna2$sim_data %>% dplyr::filter(treatment_indicator == 1)
+
+
+mean(parameters_anna2$sim_data$treatment_prob)
+
+mean(parameters_anna2$sim_data$treatment_indicator)
+
+lin_pred_t <- get_linear_predictor(alpha = c(parameters_anna2$alpha_0_outcome, alpha_cont),
+                                   covariate_data = cbind(rep(1,10000),parameters_anna2$sim_data[1:10]))
+
+lin_pred_treated <- get_linear_predictor(alpha = c(parameters_anna2$alpha_0_outcome, alpha_cont),
+                                         covariate_data = cbind(rep(1, nrow(sim_data_treated)), sim_data_treated[1:10]))
+
+
+mean(lin_pred_treated + parameters_anna2$beta + sim_data_treated$epsilon)
+
+mean(lin_pred_treated + sim_data_treated$epsilon)
+
+
+parameters_anna2
+
+lin_pred_t + parameters_anna2$beta * parameters_anna2$sim_data$treatment_indicator + parameters_anna2$sim_data$epsilon
+
+
+# Check binary covariates data ----------------------------------------------------
+
+parameters_anna3 <- generate_data(sample_size = 10000,
+                                  n_covariates = 10,
+                                  n_normal = 0,
+                                  alpha = alpha_dich,
+                                  pair_cor = 0,
+                                  prop_treated = 0.25,
+                                  n_iter = 1000,
+                                  risk_diff =  -0.15,
+                                  outcome_type = "binary",
+                                  margin_prev = 0.29)
+
+
+sim_data_treated <- parameters_anna3$sim_data %>% dplyr::filter(treatment_indicator == 1)
+
+lin_pred_treated <- get_linear_predictor(alpha = c(parameters_anna3$alpha_0_outcome, alpha_dich),
+                                         covariate_data = cbind(rep(1, nrow(sim_data_treated)), sim_data_treated[1:10]))
+
+mean((1/(1 + exp(-(lin_pred_treated + parameters_anna3$beta)))) - (1/(1 + exp(-(lin_pred_treated)))))
+
+
+mean((1/(1 + exp(-(lin_pred_treated + parameters_anna3$beta))))) - mean(1/(1 + exp(-(lin_pred_treated))))
+
+mean(parameters_anna3$sim_data$treatment_indicator)
+mean(parameters_anna3$sim_data$treatment_prob)

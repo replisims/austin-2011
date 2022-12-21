@@ -35,7 +35,7 @@ get_propensity_logit <- function(...){
   compute_logit(get_propensity(...))
 }
 
-#' Copute variance of logit propensity score
+#' Compute variance of logit propensity score
 #'
 #' @param group
 #' @param logit_propensity
@@ -48,7 +48,7 @@ get_var_logit_prop_score <- function(group, logit_propensity, treatment_indicato
   var(logit_propensity[which(treatment_indicator == group)])
 }
 
-#' Compute the calipher width
+#' Compute the caliper width
 #'
 #' @param gamma
 #' @param var_treated
@@ -57,7 +57,7 @@ get_var_logit_prop_score <- function(group, logit_propensity, treatment_indicato
 #' @return
 #' @export
 
-get_calipher_width <- function(gamma, var_treated, var_untreated){
+get_caliper_width <- function(gamma, var_treated, var_untreated){
   gamma * sqrt((var_treated + var_untreated)/2)
 }
 
@@ -87,7 +87,8 @@ sample_matching_candidate <- function(matching_data){
 get_case_logit_propensity <- function(case_id, matching_data){
   matching_data %>%
     dplyr::filter(id == case_id) %>%
-    dplyr::select(logit_propensity) %>% as.numeric()
+    dplyr::select(logit_propensity) %>%
+    as.numeric()
 }
 
 #' Compute distance of propensity score to candidate propensity score
@@ -104,7 +105,8 @@ compute_distance <- function(candidate_id, matching_data){
                                                   matching_data = matching_data)
   matching_data %>%
   dplyr::filter(treatment_indicator == 0) %>%
-    dplyr::transmute(distance = abs(candidate_logit_ps - logit_propensity))
+    dplyr::transmute(distance = abs(candidate_logit_ps - logit_propensity)) %>%
+    dplyr::pull(distance)
 }
 
 #' Get the case with the smallest distance to the candidate case
@@ -116,12 +118,22 @@ compute_distance <- function(candidate_id, matching_data){
 #' @export
 
 compute_id_min_dist <- function(candidate_id, matching_data){
+
   distance <-  compute_distance(candidate_id, matching_data)
+
   control_data <- matching_data %>%
     dplyr::filter(treatment_indicator == 0)
-  matching_data <- dplyr::bind_cols(control_data, distance)
-  matching_data %>%
+
+  matching_data <- tibble::tibble(control_data, distance)
+
+  min_dist <- matching_data %>%
     dplyr::filter(distance == min(matching_data$distance)) %>%
-    dplyr::select(id)
+    dplyr::pull(id)
+
+  if(length(min_dist > 1)){
+    min_dist <- sample(x = min_dist, size = 1)
+  }
+
+  return(min_dist)
 }
 
