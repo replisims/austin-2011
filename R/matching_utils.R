@@ -87,7 +87,8 @@ sample_matching_candidate <- function(matching_data){
 get_case_logit_propensity <- function(case_id, matching_data){
   matching_data %>%
     dplyr::filter(id == case_id) %>%
-    dplyr::select(logit_propensity) %>% as.numeric()
+    dplyr::select(logit_propensity) %>%
+    as.numeric()
 }
 
 #' Compute distance of propensity score to candidate propensity score
@@ -104,7 +105,8 @@ compute_distance <- function(candidate_id, matching_data){
                                                   matching_data = matching_data)
   matching_data %>%
   dplyr::filter(treatment_indicator == 0) %>%
-    dplyr::transmute(distance = abs(candidate_logit_ps - logit_propensity))
+    dplyr::transmute(distance = abs(candidate_logit_ps - logit_propensity)) %>%
+    dplyr::pull(distance)
 }
 
 #' Get the case with the smallest distance to the candidate case
@@ -116,10 +118,14 @@ compute_distance <- function(candidate_id, matching_data){
 #' @export
 
 compute_id_min_dist <- function(candidate_id, matching_data){
+
   distance <-  compute_distance(candidate_id, matching_data)
+
   control_data <- matching_data %>%
     dplyr::filter(treatment_indicator == 0)
-  matching_data <- dplyr::bind_cols(control_data, distance)
+
+  matching_data <- tibble::tibble(control_data, distance)
+
   min_dist <- matching_data %>%
     dplyr::filter(distance == min(matching_data$distance)) %>%
     dplyr::pull(id)
