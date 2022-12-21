@@ -39,7 +39,7 @@ for (filename in sort(list.files(results_dir))) {
 
 # ordered_results <- results[order(unlist(map(results, ~ .$scenario_id)), unlist(map(results, ~ .$job_id)))]
 
-print(results)
+flog.info('Loaded %d results', length(results))
 
 # result <- bind_rows(results)
 # result <- do.call(bind_rows, results)
