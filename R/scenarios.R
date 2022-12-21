@@ -6,6 +6,7 @@
 # Continuous outcome -------------------------------------------------------
 
 fixed_parameters <- list(sample_size = 10000,
+                         n_iter = 1000,
                          n_covariates = 10,
                          prop_treated = 0.25)
 
@@ -20,7 +21,6 @@ fixed_param_bin <- list(alpha = c(rep(log(1.1), 3),
                         beta = NULL,
                         sigma_squared = NULL,
                         outcome_type = "binary",
-                        n_iter = 1000,
                         margin_prev = 0.29)
 
 fixed_param_indep_normal <- list(n_normal = 10,
@@ -316,3 +316,4 @@ binary_scenarios <- list(indep_norm_bin_0 = indep_norm_bin_0,
                          indep_bin_bin_01 = indep_bin_bin_01,
                          indep_bin_bin_015 = indep_bin_bin_015)
 
+scenarios <- c(continuous_scenarios, binary_scenarios)

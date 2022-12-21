@@ -94,3 +94,6 @@ deprecated/
 archive/
 dump/
 
+## Infra
+.terraform/
+.terraform.lock.hcl

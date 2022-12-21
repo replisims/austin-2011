@@ -21,18 +21,24 @@
 #' \item \code{beta} numerical value indicating regression coefficient of treatment dummy}
 #' @export
 #'
-generate_data <- function(sample_size = 10000,
-                          n_covariates = 10,
-                          n_normal = n_covariates,
-                          pair_cor = 0,
+generate_data <- function(sample_size,
+                          n_covariates,
+                          n_normal = NULL,
+                          pair_cor,
                           alpha,
-                          beta = NULL,
-                          sigma_squared = NULL,
-                          outcome_type = NULL,
-                          n_iter = 1000,
-                          prop_treated = NULL,
-                          risk_diff = NULL,
-                          margin_prev = NULL){
+                          beta,
+                          sigma_squared,
+                          outcome_type,
+                          n_iter,
+                          prop_treated,
+                          risk_diff,
+                          margin_prev){
+
+  flog.info('Sample size: %d', sample_size)
+
+  if (is.null(n_normal)) {
+    n_normal <- n_covariates
+  }
 
   epsilon <- NA_real_
 
