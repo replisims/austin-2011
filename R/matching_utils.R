@@ -57,7 +57,7 @@ get_var_logit_prop_score <- function(group, logit_propensity, treatment_indicato
 #' @return
 #' @export
 
-get_calipher_width <- function(gamma, var_treated, var_untreated){
+get_caliper_width <- function(gamma, var_treated, var_untreated){
   gamma * sqrt((var_treated + var_untreated)/2)
 }
 
