@@ -69,7 +69,7 @@ result_data %>%
   scale_y_continuous(name = "Coverage of 95% CIs",
                      breaks = c(0.0, 0.2, 0.4, 0.6, 0.8, 1.0),
                      limits = c(0, 1)) +
-  scale_x_continuous(name = "Calipher width: SD of logit of PS",
+  scale_x_continuous(name = "Caliper width: SD of logit of PS",
                      breaks = c(0.05, seq(0.25, 2.5, 0.25))) +
   theme_classic() +
   labs(title = "Mixture (Scenario 1) covariates",
@@ -145,7 +145,7 @@ result_data %>%
   scale_y_continuous(name = "Coverage of 95% CIs",
                      breaks = c(0.0, 0.2, 0.4, 0.6, 0.8, 1.0),
                      limits = c(0, 1)) +
-  scale_x_continuous(name = "Calipher width: SD of logit of PS",
+  scale_x_continuous(name = "Caliper width: SD of logit of PS",
                      breaks = c(0.05, seq(0.25, 2.5, 0.25))) +
   theme_classic() +
   labs(title = "Independent normal covariates",

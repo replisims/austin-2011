@@ -18,7 +18,7 @@ result_data %>%
             size = 1.3) +
   geom_hline(yintercept = 0.05,
              color = "black") +
-  scale_x_continuous(name = "Calipher width: SD of logit of PS",
+  scale_x_continuous(name = "Caliper width: SD of logit of PS",
                      breaks = c(0.05, seq(0.25, 2.5, 0.25))) +
   scale_y_continuous(name = "Empirical Type 1 Error rate",
                      breaks = c(0.0, 0.2, 0.4, 0.6, 0.8, 1.0),

@@ -7,9 +7,9 @@
 
 # Matching Utils ----------------------------------------------------------
 
-#' Create a dateframe with matched data
+#' Create a data frame with matched data
 #'
-#' @param gamma calipher width
+#' @param gamma caliper width
 #' @param treatment_indicator vector indicating treatment or control per case
 #' @param logit_propensity vector with logit of propensity score per case
 #' @param seed
@@ -26,13 +26,13 @@ get_matched_df <- function(gamma, treatment_indicator, logit_propensity, seed){
 
   matched_data <- NULL
 
-  calipher <- get_calipher_width(gamma = gamma,
-                                 var_treated = get_var_logit_prop_score(group = 1,
+  caliper <- get_caliper_width(gamma = gamma,
+                               var_treated = get_var_logit_prop_score(group = 1,
+                                                                      logit_propensity = logit_propensity,
+                                                                      treatment_indicator = treatment_indicator),
+                               var_untreated = get_var_logit_prop_score(group = 0,
                                                                         logit_propensity = logit_propensity,
-                                                                        treatment_indicator = treatment_indicator),
-                                 var_untreated = get_var_logit_prop_score(group = 0,
-                                                                          logit_propensity = logit_propensity,
-                                                                          treatment_indicator = treatment_indicator))
+                                                                        treatment_indicator = treatment_indicator))
 
 
   #while there are still participants in the control group as well as in the treatment group
@@ -58,7 +58,7 @@ get_matched_df <- function(gamma, treatment_indicator, logit_propensity, seed){
 
   # Check whether minimal distance lower than caliper ----------------------
 
-  if(min(distance$distance) < calipher){
+  if(min(distance$distance) < caliper){
 
     #add matched pair to matched data and remove from data
 

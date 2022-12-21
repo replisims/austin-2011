@@ -17,7 +17,7 @@ result_data %>%
   scale_y_continuous(name = "MSE",
                      breaks = c(0, 0.002, 0.004, 0.006, 0.008, 0.010, 0.012),
                      limits = c(0, 0.012)) +
-  scale_x_continuous(name = "Calipher width: SD of logit of PS",
+  scale_x_continuous(name = "Caliper width: SD of logit of PS",
                      breaks = c(0.05, seq(0.25, 2.5, 0.25))) +
   theme_classic() +
   labs(title = "Independent normal covariates",
@@ -46,7 +46,7 @@ result_data %>%
   scale_y_continuous(name = "MSE",
                      breaks = c(0, 0.002, 0.004, 0.006, 0.008, 0.010, 0.012),
                      limits = c(0, 0.012)) +
-  scale_x_continuous(name = "Calipher width: SD of logit of PS",
+  scale_x_continuous(name = "Caliper width: SD of logit of PS",
                      breaks = c(0.05, seq(0.25, 2.5, 0.25))) +
   theme_classic() +
   labs(title = "Correlated normal covariates",
@@ -72,7 +72,7 @@ result_data %>%
   scale_y_continuous(name = "MSE",
                      breaks = c(0, 0.002, 0.004, 0.006, 0.008, 0.010, 0.012),
                      limits = c(0, 0.012)) +
-  scale_x_continuous(name = "Calipher width: SD of logit of PS",
+  scale_x_continuous(name = "Caliper width: SD of logit of PS",
                      breaks = c(0.05, seq(0.25, 2.5, 0.25))) +
   theme_classic() +
   labs(title = "Mixture (Scenario 1) covariates",
@@ -97,7 +97,7 @@ result_data %>%
   scale_y_continuous(name = "MSE",
                      breaks = c(0, 0.002, 0.004, 0.006, 0.008, 0.010, 0.012),
                      limits = c(0, 0.012)) +
-  scale_x_continuous(name = "Calipher width: SD of logit of PS",
+  scale_x_continuous(name = "Caliper width: SD of logit of PS",
                      breaks = c(0.05, seq(0.25, 2.5, 0.25))) +
   theme_classic() +
   labs(title = "Mixture (Scenario 2) covariates",
@@ -123,7 +123,7 @@ result_data %>%
                      # breaks = c(0, 0.002, 0.004, 0.006, 0.008, 0.010, 0.012),
                      # limits = c(0, 0.012)
                      ) +
-  scale_x_continuous(name = "Calipher width: SD of logit of PS",
+  scale_x_continuous(name = "Caliper width: SD of logit of PS",
                      breaks = c(0.05, seq(0.25, 2.5, 0.25))) +
   theme_classic() +
   labs(title = "Independent binary covariates",
@@ -149,7 +149,7 @@ result_data %>%
   scale_y_continuous(name = "MSE",
                      breaks = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
                      limits = c(0, 10)) +
-  scale_x_continuous(name = "Calipher width: SD of logit of PS",
+  scale_x_continuous(name = "Caliper width: SD of logit of PS",
                      breaks = c(0.05, seq(0.25, 2.5, 0.25))) +
   theme_classic() +
   labs(title = "Independent normal covariates",

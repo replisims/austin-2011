@@ -84,8 +84,8 @@ diff_prop <- difference_proportions(matched_data = matched_data)
 #
 # matched_data <- NULL
 #
-# calipher <- get_calipher_width(gamma = 0.3,
-#                                var_treated = get_var_logit_prop_score(group = 1,
+# caliper <- get_caliper_width(gamma = 0.3,
+#                               var_treated = get_var_logit_prop_score(group = 1,
 #                                                                       logit_propensity = logit_propensity,
 #                                                                       treatment_indicator = test_binary$sim_data$treatment_indicator),
 #                                var_untreated = get_var_logit_prop_score(group = 0,
@@ -96,7 +96,7 @@ diff_prop <- difference_proportions(matched_data = matched_data)
 #
 # match_id <- compute_id_min_dist(cand, matching_df)
 #
-# min(distance$distance) < calipher
+# min(distance$distance) < caliper
 #
 # matched_data <- as.data.frame(dplyr::bind_rows(matched_data, matching_df %>% dplyr::filter(id == cand)) %>%
 #                                 dplyr::bind_rows(matching_df %>% dplyr::filter(id == match_id$id)))

@@ -50,7 +50,7 @@ matched_df <- get_matched_df(gamma = 0.3,
 #
 # matched_data <- NULL
 #
-# calipher <- get_calipher_width(gamma = 0.3,
+# caliper <- get_caliper_width(gamma = 0.3,
 #                                var_treated = get_var_logit_prop_score(group = 1,
 #                                                                       logit_propensity = logit_propensity,
 #                                                                       treatment_indicator = sim_data$treatment_indicator),
