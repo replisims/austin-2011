@@ -144,6 +144,7 @@ run_sim <- function(
 
       crude_bias <- bias_crude(sim_data = sim_data,
                                true_treatment_effect = sim_parameters$risk_diff)
+
       contingency_matrix_unmatched <- get_contingency_matrix_unmatched(sim_data)
 
 

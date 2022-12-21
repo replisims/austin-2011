@@ -15,7 +15,7 @@
 #'
 #' @return a list with the following content
 #' \itemize{
-#' \item \code{sim_data} dataframe with simulated data}
+#' \item \code{sim_data} data frame with simulated data}
 #' \item \code{alpha_0_treat} numerical value indicating intercept of treatment model
 #' \item \code{alpha_0_outcome} numerical value indicating intercept of outcome model
 #' \item \code{beta} numerical value indicating regression coefficient of treatment dummy}
@@ -26,13 +26,13 @@ generate_data <- function(sample_size,
                           n_normal = NULL,
                           pair_cor,
                           alpha,
-                          beta,
-                          sigma_squared,
+                          beta = NULL,
+                          sigma_squared = NULL,
                           outcome_type,
                           n_iter,
                           prop_treated,
-                          risk_diff,
-                          margin_prev){
+                          risk_diff = NULL,
+                          margin_prev = NULL){
 
   flog.info('Sample size: %d', sample_size)
 
@@ -42,7 +42,7 @@ generate_data <- function(sample_size,
 
   epsilon <- NA_real_
 
-  if(n_normal>0){
+  if(n_normal > 0){
     cov_mat <- get_cov_matrix(n_normal = n_normal,
                               pair_cor = pair_cor)}
 
