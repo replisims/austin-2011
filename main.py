@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 
 
 N_REPETITIONS = 100
-RESULTS_DIR = 'batch/v7'
+RESULTS_DIR = 'batch/v8'
 
 
 def scenarios():
@@ -21,7 +21,8 @@ def scenarios():
     # number_of_scenarios = 1
     # range(first_scenario_id, first_scenario_id + number_of_scenarios)
     # return list(range(26, 30+1)) + [35, 40, 45, 50]
-    return list(range(29, 50+1, 5))
+    # return list(range(29, 50+1, 5))
+    return [10, 15, 20, 25]
 
 
 def create_jobs():

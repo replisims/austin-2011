@@ -13,6 +13,6 @@ docker run --rm -it \
   -e AWS_PROFILE="default" \
   -e CACHE_DIR="/tmp/cache" \
   -e RESULTS_BUCKET="annloh-$PROJECT-staging-cache" \
-  -e RESULTS_DIR="batch/v6" \
+  -e RESULTS_DIR="batch/v8" \
   -e START_TIMES="20221221_182034 20221221_182607 20221221_182628 20221221_182635 20221221_182645" \
   $IMAGE cloud/wrap_collect_results.sh
